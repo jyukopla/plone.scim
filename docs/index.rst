@@ -1,0 +1,5 @@
+==========
+plone.scim
+==========
+
+User documentation
