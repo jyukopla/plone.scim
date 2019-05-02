@@ -1,0 +1,76 @@
+From 0b011f834718b85b06b65315e35e375339e06058 Mon Sep 17 00:00:00 2001
+From: Asko Soukka <asko.soukka@iki.fi>
+Date: Mon, 15 Apr 2019 19:40:59 +0300
+Subject: [PATCH 1/3] Fix issue where DefaultReadFile stream iterator did not
+ produce bytes on Python 3
+
+---
+ plone/dexterity/filerepresentation.py | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
+
+diff --git a/plone/dexterity/filerepresentation.py b/plone/dexterity/filerepresentation.py
+index 75c318a..b3ee215 100644
+--- a/plone/dexterity/filerepresentation.py
++++ b/plone/dexterity/filerepresentation.py
+@@ -689,13 +689,11 @@ def _getStream(self):
+         # publisher, which will serve it efficiently even after the
+         # transaction is closed
+         message = self._getMessage()
++        out = tempfile.TemporaryFile(mode='w+b')
+         if six.PY2:
+-            # message.as_string will return str in both Python 2 and 3
+-            kw = {'mode': 'w+b'}
++            out.write(message.as_string())
+         else:
+-            kw = {'mode': 'w+', 'encoding': 'utf-8'}
+-        out = tempfile.TemporaryFile(**kw)
+-        out.write(message.as_string())
++            out.write(message.as_string().encode('utf-8'))
+         self._size = out.tell()
+         out.seek(0)
+         return out
+
+From e5296b73d989af986b3cf67608a8ede363522ef9 Mon Sep 17 00:00:00 2001
+From: Asko Soukka <asko.soukka@iki.fi>
+Date: Mon, 15 Apr 2019 19:42:21 +0300
+Subject: [PATCH 2/3] Fix issue where DefaultWriteFile did not support parsing
+ bytes on Python 3
+
+---
+ plone/dexterity/filerepresentation.py | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/plone/dexterity/filerepresentation.py b/plone/dexterity/filerepresentation.py
+index b3ee215..2a6ab42 100644
+--- a/plone/dexterity/filerepresentation.py
++++ b/plone/dexterity/filerepresentation.py
+@@ -836,7 +836,10 @@ def write(self, data):
+         if self._closed:
+             raise ValueError("File is closed")
+         self._written += len(data)
+-        self._parser.feed(data)
++        if isinstance(data, bytes):
++            self._parser.feed(data.decode('utf-8'))
++        else:
++            self._parser.feed(data)
+ 
+     def writelines(self, sequence):
+         for item in sequence:
+
+From d6bb3a655edd6cc2a697f6481fd5ac6101c244d0 Mon Sep 17 00:00:00 2001
+From: Asko Soukka <asko.soukka@iki.fi>
+Date: Mon, 15 Apr 2019 19:45:54 +0300
+Subject: [PATCH 3/3] Add news item
+
+---
+ news/102.bugfix | 1 +
+ 1 file changed, 1 insertion(+)
+ create mode 100644 news/102.bugfix
+
+diff --git a/news/102.bugfix b/news/102.bugfix
+new file mode 100644
+index 0000000..0355a95
+--- /dev/null
++++ b/news/102.bugfix
+@@ -0,0 +1 @@
++Fix WebDAV compatibility issues with ZServer on Python 3 [datakurre]

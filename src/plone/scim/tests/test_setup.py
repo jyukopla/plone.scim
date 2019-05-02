@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 """Setup tests for this package."""
-from plone.scim.testing import PLONE_SCIM_INTEGRATION_TESTING  # noqa: E501
 from plone import api
 from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
+from plone.scim.testing import PLONE_SCIM_INTEGRATION_TESTING  # noqa: E501
 
 import unittest
+
 
 try:
     from Products.CMFPlone.utils import get_installer
@@ -28,17 +29,13 @@ class TestSetup(unittest.TestCase):
 
     def test_product_installed(self):
         """Test if plone.scim is installed."""
-        self.assertTrue(self.installer.isProductInstalled(
-            'plone.scim'))
+        self.assertTrue(self.installer.isProductInstalled('plone.scim'))
 
     def test_browserlayer(self):
         """Test that IPloneScimLayer is registered."""
-        from plone.scim.interfaces import (
-            IPloneScimLayer)
+        from plone.scim.interfaces import (IPloneScimLayer)
         from plone.browserlayer import utils
-        self.assertIn(
-            IPloneScimLayer,
-            utils.registered_layers())
+        self.assertIn(IPloneScimLayer, utils.registered_layers())
 
 
 class TestUninstall(unittest.TestCase):
@@ -58,14 +55,11 @@ class TestUninstall(unittest.TestCase):
 
     def test_product_uninstalled(self):
         """Test if plone.scim is cleanly uninstalled."""
-        self.assertFalse(self.installer.isProductInstalled(
-            'plone.scim'))
+        self.assertFalse(self.installer.isProductInstalled('plone.scim'))
 
     def test_browserlayer_removed(self):
         """Test that IPloneScimLayer is removed."""
         from plone.scim.interfaces import \
             IPloneScimLayer
         from plone.browserlayer import utils
-        self.assertNotIn(
-            IPloneScimLayer,
-            utils.registered_layers())
+        self.assertNotIn(IPloneScimLayer, utils.registered_layers())

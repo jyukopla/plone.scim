@@ -9,10 +9,12 @@ bin/
 buildout-cache/
 develop-eggs/
 eggs/
+extras/
 htmlcov/
 include/
 lib/
 local/
+netrc
 node_modules/
 parts/
 src/*
@@ -29,6 +31,10 @@ output.xml
 package.json
 pip-selfcheck.json
 report.html
+.cache/
+.idea/
+.netrc
+.result
 .vscode/
 .tox/
 reports/
