@@ -3275,6 +3275,25 @@ self: super: {
       sha256 = "1pmlaxdl2zv3v6515f71908313d31kffv5niag4fmpxasf1vqlff";
     };
   };
+  "plone.recipe.zope2instance" = super.buildPythonPackage {
+    name = "plone.recipe.zope2instance-6.1.4";
+    doCheck = false;
+    propagatedBuildInputs = [
+      self."Paste"
+      self."ZEO"
+      self."ZODB"
+      self."Zope"
+      self."setuptools"
+      self."six"
+      self."waitress"
+      self."zc.buildout"
+      self."zc.recipe.egg"
+    ];
+    src = fetchurl {
+      url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/9e/92/bca1fde8d8cb1d81077343cb0cd3c038f36df5f5b226c5f1f49a210eddf9/plone.recipe.zope2instance-6.1.4.tar.gz";
+      sha256 = "1nl9p3c16vwy6d652l9i1qdrwca3qs70flw03wb5b8jcbxk2wr75";
+    };
+  };
   "plone.registry" = super.buildPythonPackage {
     name = "plone.registry-1.1.5";
     doCheck = false;
