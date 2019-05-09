@@ -31,7 +31,7 @@ nix-shell:
 build: result
 
 .PHONY: check
-check: bin/code-analysis
+check: .installed.cfg
 	bin/code-analysis
 
 .PHONY: clean
@@ -61,7 +61,7 @@ show:
 	buildout -c $(BUILDOUT_CFG) $(BUILDOUT_ARGS) annotate
 
 .PHONY: test
-test: bin/pocompile bin/test check
+test: check
 	bin/pocompile
 	bin/test --all
 #	LANGUAGE=fi bin/pybot $(PYBOT_ARGS) -d parts/test docs
@@ -87,9 +87,6 @@ sphinx: .installed.cfg
 
 .installed.cfg: $(wildcard *.cfg)
 	buildout -c $(BUILDOUT_CFG) $(BUILDOUT_ARGS)
-
-bin/%:
-	buildout -c $(BUILDOUT_CFG) $(BUILDOUT_ARGS) install $*
 
 .netrc:
 	@echo machine ${INDEX_HOSTNAME} > .netrc
