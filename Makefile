@@ -8,6 +8,7 @@ INDEX_URL ?= https://repo.kopla.jyu.fi/api/pypi/pypi/simple
 INDEX_HOSTNAME ?= repo.kopla.jyu.fi
 
 PYTHON ?= python3
+REQUIREMENTS ?= p52-py3
 BUILDOUT_CFG ?= buildout.cfg
 BUILDOUT_ARGS ?= -N
 PYBOT_ARGS ?=
@@ -19,14 +20,14 @@ all: .installed.cfg
 nix-%: .netrc
 	nix-shell --option netrc-file .netrc setup.nix -A develop \
 	--argstr python $(PYTHON) \
-	--arg requirements ./requirements-$(PYTHON).nix \
+	--arg requirements ./requirements-$(REQUIREMENTS).nix \
 	--run "$(MAKE) $*"
 
 .PHONY: nix-shell
 nix-shell:
 	nix-shell --pure setup.nix -A develop \
 	--argstr python $(PYTHON) \
-	--arg requirements ./requirements-$(PYTHON).nix
+	--arg requirements ./requirements-$(REQUIREMENTS).nix
 
 build: result
 
@@ -99,7 +100,7 @@ netrc: .netrc
 result:
 	nix-build --option netrc-file .netrc setup.nix -A env \
 	--argstr python $(PYTHON) \
-	--arg requirements ./requirements-$(PYTHON).nix
+	--arg requirements ./requirements-$(REQUIREMENTS).nix
 
 requirements.txt: BUILDOUT_ARGS=buildout:overwrite-requirements-file=true
 requirements.txt: requirements-buildout.nix

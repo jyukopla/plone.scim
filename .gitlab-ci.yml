@@ -1,6 +1,19 @@
 stages:
   - test
 
+test-plone-4.3-py2:
+  tags:
+  - nix
+  stage: test
+  script:
+  - BUILDOUT_CFG=test_plone43.cfg
+    BUILDOUT_ARGS="-N install code-analysis pocompile test"
+    LC_ALL=C
+    PYTHON=python2
+    REQUIREMENTS=p43-py2
+    ROBOT_BROWSER=headlessfirefox
+    make nix-test
+
 test-plone-5.2-py2:
   tags:
   - nix
@@ -10,6 +23,7 @@ test-plone-5.2-py2:
     BUILDOUT_ARGS="-N install code-analysis pocompile test"
     LC_ALL=C
     PYTHON=python2
+    REQUIREMENTS=p52-py2
     ROBOT_BROWSER=headlessfirefox
     make nix-test
 
@@ -22,5 +36,6 @@ test-plone-5.2-py3:
     BUILDOUT_ARGS="-N install code-analysis pocompile test"
     LC_ALL=C
     PYTHON=python3
+    REQUIREMENTS=p52-py3
     ROBOT_BROWSER=headlessfirefox
     make nix-test

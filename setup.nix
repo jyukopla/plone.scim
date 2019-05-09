@@ -14,15 +14,42 @@
 
 let overrides = self: super: {
 
+  "funcsigs" = super."funcsigs".overridePythonAttrs(old: {
+    doCheck = false;
+  });
+
+  "mock" = super."mock".overridePythonAttrs(old: {
+    doCheck = false;
+  });
+
+  "zope.testing" = super."zope.testing".overridePythonAttrs(old: {
+    postInstall = ''
+      rm -f $out/bin/zope-testrunner
+    '';
+  });
+
   "plone.dexterity" = super."plone.dexterity".overridePythonAttrs(old: {
-    patches = [ ./plone.dexterity.102.patch ];
+    patches = if old.name != "plone.dexterity-2.2.8" then [ ./plone.dexterity.102.patch ] else [];
   });
 
   "plone.testing" = super."plone.testing".overridePythonAttrs(old: {
-    postPatch = ''
+    postPatch = if old.name == "plone.testing-4.1.2" then ''
+      sed -i "s|from Testing.ZopeTestCase.ZopeLite import _patched as ZOPETESTCASEALERT||g" src/plone/testing/z2.py
+      sed -i "s|if ZOPETESTCASEALERT|from Testing.ZopeTestCase.ZopeLite import _patched as ZOPETESTCASEALERT\n        if ZOPETESTCASEALERT|g" src/plone/testing/z2.py
+    '' else ''
       sed -i "s|from Testing.ZopeTestCase.ZopeLite import _patched as ZOPETESTCASEALERT||g" src/plone/testing/zope.py
       sed -i "s|if ZOPETESTCASEALERT|from Testing.ZopeTestCase.ZopeLite import _patched as ZOPETESTCASEALERT\n        if ZOPETESTCASEALERT|g" src/plone/testing/zope.py
     '';
+  });
+
+  # Will be fixed by updating Products.CMFActionIcons
+  "Products.CMFActionIcons" = super."Products.CMFActionIcons".overridePythonAttrs(old: {
+    nativeBuildInputs = [ self."eggtestinfo" ];
+  });
+
+  # Will be fixed by updating Products.CMFCore
+  "Products.CMFCore" = super."Products.CMFCore".overridePythonAttrs(old: {
+    nativeBuildInputs = [ self."eggtestinfo" ];
   });
 
   # Will be fixed by updating jsonschema
