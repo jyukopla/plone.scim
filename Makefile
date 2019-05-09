@@ -7,6 +7,7 @@
 INDEX_URL ?= https://repo.kopla.jyu.fi/api/pypi/pypi/simple
 INDEX_HOSTNAME ?= repo.kopla.jyu.fi
 
+PYTHON ?= python3
 BUILDOUT_CFG ?= buildout.cfg
 BUILDOUT_ARGS ?= -N
 PYBOT_ARGS ?=
@@ -17,11 +18,15 @@ all: .installed.cfg
 # Cannot be --pure to allow configuring CI build with environment variables
 nix-%: requirements.nix .netrc
 	nix-shell --option netrc-file .netrc setup.nix -A develop \
+	--argstr python $(PYTHON) \
+	--arg requirements ./requirements-$(PYTHON).nix \
 	--run "$(MAKE) $*"
 
 .PHONY: nix-shell
 nix-shell:
-	nix-shell --pure setup.nix -A develop
+	nix-shell --pure setup.nix -A develop \
+	--argstr python $(PYTHON) \
+	--arg requirements ./requirements-$(PYTHON).nix
 
 build: result
 
@@ -92,18 +97,20 @@ netrc: .netrc
 	ln -s .netrc netrc
 
 result:
-	nix-build --option netrc-file .netrc setup.nix -A env
+	nix-build --option netrc-file .netrc setup.nix -A env \
+	--argstr python $(PYTHON) \
+	--arg requirements ./requirements-$(PYTHON).nix
 
 requirements.txt: BUILDOUT_ARGS=buildout:overwrite-requirements-file=true
 requirements.txt: requirements-buildout.nix
 	nix-shell --pure --option netrc-file .netrc \
-	setup.nix -A develop --arg buildout true \
+	setup.nix -A develop --arg requirements ./requirements-buildout.nix  \
 	--run "buildout -c $(BUILDOUT_CFG) $(BUILDOUT_ARGS)"
 
 requirements.nix: requirements.txt requirements-buildout.txt
 	@make netrc
 	HOME=$(PWD) NIX_CONF_DIR=$(PWD) nix-shell -p libffi nix \
-	--run 'nix-shell setup.nix -A pip2nix \
+	--run 'nix-shell setup.nix -A pip2nix --argstr python $(PYTHON) \
 	--run "pip2nix generate -r requirements.txt -r requirements-buildout.txt \
 	--index-url $(INDEX_URL) \
 	--output=requirements.nix"'

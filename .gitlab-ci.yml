@@ -1,12 +1,24 @@
 stages:
   - test
 
-test-plone-5.2:
+test-plone-5.2-py2:
   tags:
   - nix
   stage: test
   script:
   - BUILDOUT_CFG=test_plone52.cfg
     LC_ALL=C
+    PYTHON=python2
+    ROBOT_BROWSER=headlessfirefox
+    make nix-test
+
+test-plone-5.2-py3:
+  tags:
+  - nix
+  stage: test
+  script:
+  - BUILDOUT_CFG=test_plone52.cfg
+    LC_ALL=C
+    PYTHON=python3
     ROBOT_BROWSER=headlessfirefox
     make nix-test

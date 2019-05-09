@@ -7,8 +7,9 @@
     sha256 = "15gzkxpwmjfhvcsr6w2nhaz0jlwnl1ary8l5lz6j6fkmg3mwb6db";
   })
 #, setup ? import ../setup.nix
-, pythonPackages ? pkgs.python3Packages
-, buildout ? false
+, python ? "python3"
+, pythonPackages ? builtins.getAttr (python + "Packages") pkgs
+, requirements ? ./requirements.nix
 }:
 
 let overrides = self: super: {
@@ -61,14 +62,7 @@ let overrides = self: super: {
 
 in setup {
   inherit pkgs pythonPackages overrides;
-# nonInstallablePackages = [
-#   "plone.app.testing"
-#   "plone.app.robotframework"
-# ];
-  src =
-    if buildout
-    then ./requirements-buildout.nix
-    else ./requirements.nix;
+  src = requirements;
   buildInputs = with pkgs; [
     firefox
     geckodriver
