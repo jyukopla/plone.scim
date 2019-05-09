@@ -16,7 +16,7 @@ PYBOT_ARGS ?=
 all: .installed.cfg
 
 # Cannot be --pure to allow configuring CI build with environment variables
-nix-%: requirements.nix .netrc
+nix-%: .netrc
 	nix-shell --option netrc-file .netrc setup.nix -A develop \
 	--argstr python $(PYTHON) \
 	--arg requirements ./requirements-$(PYTHON).nix \
