@@ -7,18 +7,18 @@ import requests
 import unittest
 
 
-class TestResourceTypes(unittest.TestCase):
+class TestSchemas(unittest.TestCase):
     layer = PLONE_SCIM_FUNCTIONAL_TESTING
 
     def setUp(self):
         self.portal = self.layer['portal']
         self.request = self.layer['request']
 
-    def test_resource_types_endpoint(self):
+    def test_schemas_endpoint(self):
         url = '/'.join([
             self.portal.absolute_url(),
             BASE_PATH,
-            'ResourceTypes',
+            'Schemas',
         ])
 
         response = requests.get(

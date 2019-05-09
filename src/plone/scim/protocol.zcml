@@ -12,4 +12,13 @@
     permission="zope2.View"
     />
 
+  <plone:service
+    name="@scim"
+    method="GET"
+    accept="application/scim+json"
+    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+    factory=".protocol.Get"
+    permission="zope2.View"
+  />
+
 </configure>

@@ -97,10 +97,11 @@ class Get(Service):
 
     def render(self):
         if self.view is not None:
-            self.request.response.setHeader(
-                'Content-Type',
-                'application/json',
-            )
+            if 'application/scim+json' in self.request.getHeader('Accept'):
+                content_type = 'application/scim+json'
+            else:
+                content_type = 'application/json'
+            self.request.response.setHeader('Content-Type', content_type)
             return json.dumps(
                 self.view(self.context, self.request)(),
                 indent=2,

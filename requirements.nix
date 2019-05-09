@@ -1398,6 +1398,14 @@ self: super: {
       sha256 = "0s77knsv8aglns4s98ib5fvharljcsya5clf02ciqzy5s794jjsg";
     };
   };
+  "fancycompleter" = super.buildPythonPackage {
+    name = "fancycompleter-0.8";
+    doCheck = false;
+    src = fetchurl {
+      url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/fd/e3/da39a6cfaffe578a01221261ac1d5d99c48d44f6377ff0de3a12dd332cec/fancycompleter-0.8.tar.gz";
+      sha256 = "04lvacix99d242b1jv2qxdi6gq1djv8w1i3racliydqj6lgjylnj";
+    };
+  };
   "feedparser" = super.buildPythonPackage {
     name = "feedparser-5.2.1";
     doCheck = false;
@@ -1779,6 +1787,19 @@ self: super: {
     src = fetchurl {
       url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/e7/7f/470d6fcdf23f9f3518f6b0b76be9df16dcc8630ad409947f8be2eb0ed13a/pathtools-0.1.2.tar.gz";
       sha256 = "1h7iam33vwxk8bvslfj4qlsdprdnwf8bvzhqh3jq5frr391cadbw";
+    };
+  };
+  "pdbpp" = super.buildPythonPackage {
+    name = "pdbpp-0.9.2";
+    doCheck = false;
+    propagatedBuildInputs = [
+      self."Pygments"
+      self."fancycompleter"
+      self."wmctrl"
+    ];
+    src = fetchurl {
+      url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/e6/cc/8bf81f5e53daa4a90d696fa430c2f4e709656e2bf953686bd15c0746616f/pdbpp-0.9.2.tar.gz";
+      sha256 = "01fskyxwy5dfb9hvdldbxqq9alskdn16bl1y4jf46hgawhk77ryx";
     };
   };
   "persistent" = super.buildPythonPackage {
@@ -4057,6 +4078,14 @@ self: super: {
     src = fetchurl {
       url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/0b/02/ae6ceac1baeda530866a85075641cec12989bd8d31af6d5ab4a3e8c92f47/webencodings-0.5.1.tar.gz";
       sha256 = "08qrgrc4hrximb2gqnl69g01s93rhf2842jfxdjljc1dbwj1qsmk";
+    };
+  };
+  "wmctrl" = super.buildPythonPackage {
+    name = "wmctrl-0.3";
+    doCheck = false;
+    src = fetchurl {
+      url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/01/c6/001aefbde5782d6f359af0a8782990c3f4e751e29518fbd59dc8dfc58b18/wmctrl-0.3.tar.gz";
+      sha256 = "04wacb7lj7rbpx5q5cnb19n9k4w85szdfa8xwfv6chsmq5dgc1nq";
     };
   };
   "yapf" = super.buildPythonPackage {
