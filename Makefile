@@ -104,7 +104,9 @@ result:
 requirements.txt: BUILDOUT_ARGS=buildout:overwrite-requirements-file=true
 requirements.txt: requirements-buildout.nix
 	nix-shell --pure --option netrc-file .netrc \
-	setup.nix -A develop --arg requirements ./requirements-buildout.nix  \
+	setup.nix -A develop \
+	--argstr python $(PYTHON) \
+	--arg requirements ./requirements-buildout.nix  \
 	--run "buildout -c $(BUILDOUT_CFG) $(BUILDOUT_ARGS)"
 
 requirements.nix: requirements.txt requirements-buildout.txt

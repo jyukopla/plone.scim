@@ -53,9 +53,9 @@ let overrides = self: super: {
 
   # fix zc.recipe.egg to support zip-installed setuptools
   "zc.recipe.egg" = super."zc.recipe.egg".overridePythonAttrs (old: {
-    postPatch = ''
+    postPatch = if !pythonPackages.isPy27 then ''
       sed -i "s|return copy.deepcopy(cache_storage\[cache_key\])|import copyreg; import zipimport; copyreg.pickle(zipimport.zipimporter, lambda x: (x.__class__, (x.archive, ))); return copy.deepcopy(cache_storage[cache_key])|g" src/zc/recipe/egg/egg.py
-    '';
+    '' else "";
   });
 
 };
