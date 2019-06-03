@@ -7,10 +7,10 @@ test-plone-4.3-py2:
   stage: test
   script:
   - BUILDOUT_CFG=test_plone43.cfg
-    BUILDOUT_ARGS="-N install code-analysis pocompile test"
+    BUILDOUT_ARGS="-N install pylama pocompile test"
     LC_ALL=C
+    PLONE=plone43
     PYTHON=python2
-    REQUIREMENTS=p43-py2
     ROBOT_BROWSER=headlessfirefox
     make nix-test
 
@@ -20,10 +20,10 @@ test-plone-5.2-py2:
   stage: test
   script:
   - BUILDOUT_CFG=test_plone52.cfg
-    BUILDOUT_ARGS="-N install code-analysis pocompile test"
+    BUILDOUT_ARGS="-N install pylama pocompile test"
     LC_ALL=C
+    PLONE=plone52
     PYTHON=python2
-    REQUIREMENTS=p52-py2
     ROBOT_BROWSER=headlessfirefox
     make nix-test
 
@@ -33,9 +33,9 @@ test-plone-5.2-py3:
   stage: test
   script:
   - BUILDOUT_CFG=test_plone52.cfg
-    BUILDOUT_ARGS="-N install code-analysis pocompile test"
+    BUILDOUT_ARGS="-N install black pylama pocompile test"
     LC_ALL=C
+    PLONE=plone52
     PYTHON=python3
-    REQUIREMENTS=p52-py3
     ROBOT_BROWSER=headlessfirefox
     make nix-test

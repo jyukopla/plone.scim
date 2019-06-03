@@ -1173,6 +1173,14 @@ self: super: {
       sha256 = "15czj11s2bcgchn2jx81k0jmswf2hjxry5cq820h7hgpxiscfss3";
     };
   };
+  "Pygments" = super.buildPythonPackage {
+    name = "Pygments-2.0.2";
+    doCheck = false;
+    src = fetchurl {
+      url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/f4/c6/bdbc5a8a112256b2b6136af304dbae93d8b1ef8738ff2d12a51018800e46/Pygments-2.0.2.tar.gz";
+      sha256 = "0lagrwifsgn0s8bzqahpr87p7gd38xja8f06akscinp6hj89283k";
+    };
+  };
   "Record" = super.buildPythonPackage {
     name = "Record-2.13.0";
     doCheck = false;
@@ -1388,12 +1396,40 @@ self: super: {
       sha256 = "0rdv0n2aa181mkrybwvl3czkrrikgzd4y2cri6j735fwhj65nlz9";
     };
   };
+  "astroid" = super.buildPythonPackage {
+    name = "astroid-1.6.6";
+    doCheck = false;
+    propagatedBuildInputs = [
+      self."backports.functools-lru-cache"
+      self."enum34"
+      self."lazy-object-proxy"
+      self."singledispatch"
+      self."six"
+      self."wrapt"
+    ];
+    src = fetchurl {
+      url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/75/bf/f0af5fcc6deb53b3a480c3487632eeb6324a3ae51cd20161865853f87c31/astroid-1.6.6.tar.gz";
+      sha256 = "1ir4n736x36iyg8rq263bwszamlncfh7xz94gpxxkwa4gzy6jn6j";
+    };
+  };
   "backports.functools-lru-cache" = super.buildPythonPackage {
     name = "backports.functools-lru-cache-1.5";
     doCheck = false;
     src = fetchurl {
       url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/57/d4/156eb5fbb08d2e85ab0a632e2bebdad355798dece07d4752f66a8d02d1ea/backports.functools_lru_cache-1.5.tar.gz";
       sha256 = "06jgv8gib4fhky0p5cmxdghvsgjyzcdgk48k8pxb1ccf11znk64x";
+    };
+  };
+  "bleach" = super.buildPythonPackage {
+    name = "bleach-3.1.0";
+    doCheck = false;
+    propagatedBuildInputs = [
+      self."six"
+      self."webencodings"
+    ];
+    src = fetchurl {
+      url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/78/5a/0df03e8735cd9c75167528299c738702437589b9c71a849489d00ffa82e8/bleach-3.1.0.tar.gz";
+      sha256 = "1yhrgrhkln8bd6gn3imj69g1h4xqah9gaz9q26crqr6gmmvpzprz";
     };
   };
   "borg.localrole" = super.buildPythonPackage {
@@ -1724,177 +1760,6 @@ self: super: {
       sha256 = "13dglxpl1alp9lyjkwklsfl0d7ahckbgvzh1xn6sk8rnmw0r1cfm";
     };
   };
-  "flake8" = super.buildPythonPackage {
-    name = "flake8-3.3.0";
-    doCheck = false;
-    propagatedBuildInputs = [
-      self."configparser"
-      self."enum34"
-      self."mccabe"
-      self."pycodestyle"
-      self."pyflakes"
-    ];
-    src = fetchurl {
-      url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/47/64/382631de5fd8dab367bedeff6b5b55fd9a7c883daa44f4032636e2d203ca/flake8-3.3.0.tar.gz";
-      sha256 = "04izn1q1lgbr408l9b3vkxqmpi6mq47bxwc0iwypb02mrxns41xr";
-    };
-  };
-  "flake8-blind-except" = super.buildPythonPackage {
-    name = "flake8-blind-except-0.1.1";
-    doCheck = false;
-    propagatedBuildInputs = [
-      self."setuptools"
-    ];
-    src = fetchurl {
-      url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/ff/f2/ab635e6e420e78c94eab50cd3f53abd3ec27e411793e50b14f29edbb9f0b/flake8-blind-except-0.1.1.tar.gz";
-      sha256 = "16g58mkr3fcn2vlfhp3rlahj93qswc7jd5qrqp748mc26dk3b8xc";
-    };
-  };
-  "flake8-coding" = super.buildPythonPackage {
-    name = "flake8-coding-1.3.1";
-    doCheck = false;
-    propagatedBuildInputs = [
-      self."flake8"
-    ];
-    src = fetchurl {
-      url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/f9/d7/889f7961ed549f15a280fa36edfc9b9016df38cd25cd0a8a7e4edc06efcf/flake8-coding-1.3.1.tar.gz";
-      sha256 = "0i7qh5wmwh5bgf1lgi82nq2n6qks2jgv8pvr27dgw4c7q0i2p72l";
-    };
-  };
-  "flake8-commas" = super.buildPythonPackage {
-    name = "flake8-commas-2.0.0";
-    doCheck = false;
-    propagatedBuildInputs = [
-      self."flake8"
-    ];
-    src = fetchurl {
-      url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/85/6b/a64cb3469543ec48f55287c4736c5430801e49ca4810c3e2124755bd9e5c/flake8-commas-2.0.0.tar.gz";
-      sha256 = "1ds41zg7bfcmi5m2qjjg1xm6dv5gb7xm2wfzhw1khlbg8scmh06k";
-    };
-  };
-  "flake8-debugger" = super.buildPythonPackage {
-    name = "flake8-debugger-3.1.0";
-    doCheck = false;
-    propagatedBuildInputs = [
-      self."flake8"
-      self."pycodestyle"
-    ];
-    src = fetchurl {
-      url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/39/4b/90548607282483dd15f9ce1f4434d735ae756e16e1faf60621b0f8877fcc/flake8-debugger-3.1.0.tar.gz";
-      sha256 = "15qxrb2d7sr0pf024fkknsx58aqa5iz38b9s0panv3zfwf6vhkxy";
-    };
-  };
-  "flake8-deprecated" = super.buildPythonPackage {
-    name = "flake8-deprecated-1.3";
-    doCheck = false;
-    propagatedBuildInputs = [
-      self."flake8"
-    ];
-    src = fetchurl {
-      url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/28/28/d39539c84cfb432d7431255ed16f93125342ced4a137d653b50b621fae36/flake8-deprecated-1.3.tar.gz";
-      sha256 = "1xx7myq5zayb2609im6gg183k8zhsdng3r50ad6b7cqzr32s19cz";
-    };
-  };
-  "flake8-isort" = super.buildPythonPackage {
-    name = "flake8-isort-2.7.0";
-    doCheck = false;
-    propagatedBuildInputs = [
-      self."flake8"
-      self."isort"
-      self."testfixtures"
-    ];
-    src = fetchurl {
-      url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/20/94/7f17d507ab8973922b98ef0c9ac32de88ac592c7a8367e528fe205e72f50/flake8-isort-2.7.0.tar.gz";
-      sha256 = "0s1caxb40wikc9p11f8m7a91w6diqxkdglkcy9ijygzdxxg4ka41";
-    };
-  };
-  "flake8-pep3101" = super.buildPythonPackage {
-    name = "flake8-pep3101-1.2.1";
-    doCheck = false;
-    propagatedBuildInputs = [
-      self."flake8"
-    ];
-    src = fetchurl {
-      url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/e1/ac/72ff428f624278e5f12119a624a85bc82de9a5b5fdd056e2e955bb67c24a/flake8-pep3101-1.2.1.tar.gz";
-      sha256 = "06p281sbk3rhah7dcsdj4av21ig5d1dvw7k9n177k0yhppb22f29";
-    };
-  };
-  "flake8-plone-api" = super.buildPythonPackage {
-    name = "flake8-plone-api-1.4";
-    doCheck = false;
-    propagatedBuildInputs = [
-      self."flake8"
-    ];
-    src = fetchurl {
-      url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/69/63/2855e8ec58991c49b8211ce6d4d4d8df969c93698ed914dbd27d6a5a1d46/flake8-plone-api-1.4.tar.gz";
-      sha256 = "1xnwq99q3xpbzci3i9nf61d0nl78sm9hqgv21s57vq5nmndsknya";
-    };
-  };
-  "flake8-plone-hasattr" = super.buildPythonPackage {
-    name = "flake8-plone-hasattr-0.2.post0";
-    doCheck = false;
-    propagatedBuildInputs = [
-      self."flake8"
-    ];
-    src = fetchurl {
-      url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/db/d4/63e659daf3b6d08854b7a6cd1d90743fe610cf33c4302ab0484d88ce2c49/flake8-plone-hasattr-0.2.post0.tar.gz";
-      sha256 = "1ilf6yg9p40f1c8a34ygdl73zclzv2m6hdlsfj07z16y8wdgjbpp";
-    };
-  };
-  "flake8-print" = super.buildPythonPackage {
-    name = "flake8-print-3.1.0";
-    doCheck = false;
-    propagatedBuildInputs = [
-      self."flake8"
-      self."pycodestyle"
-      self."six"
-    ];
-    src = fetchurl {
-      url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/f2/06/c6a4916f14e8ae526b27f921d953b1e64adecf63ab479322edba2d361263/flake8-print-3.1.0.tar.gz";
-      sha256 = "0m1g6krmqi2j6ypykk0zpl45xk5y6gx6mc541m064fxn730yc42h";
-    };
-  };
-  "flake8-quotes" = super.buildPythonPackage {
-    name = "flake8-quotes-2.0.1";
-    doCheck = false;
-    propagatedBuildInputs = [
-      self."flake8"
-    ];
-    src = fetchurl {
-      url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/a2/40/d2b123f28b0dd38cf1ac4a98c80e0dfdaf0529a505f4b123d7f5b78901ee/flake8-quotes-2.0.1.tar.gz";
-      sha256 = "0f10q2580bzxmr0lic42q32qbyf3aq42di91wyl04hrd8xmszj8h";
-    };
-  };
-  "flake8-string-format" = super.buildPythonPackage {
-    name = "flake8-string-format-0.2.3";
-    doCheck = false;
-    propagatedBuildInputs = [
-      self."flake8"
-    ];
-    src = fetchurl {
-      url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/df/1f/a16f1a1a0b3abf067c56ac7261fd167820bc612f3345eea20a9d57d60e6f/flake8-string-format-0.2.3.tar.gz";
-      sha256 = "1w9ji233l9qlb3g87yhc01rf4vbxkgs5wicpi2bfshlj7l85ckbp";
-    };
-  };
-  "flake8-todo" = super.buildPythonPackage {
-    name = "flake8-todo-0.7";
-    doCheck = false;
-    propagatedBuildInputs = [
-      self."pycodestyle"
-    ];
-    src = fetchurl {
-      url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/97/44/4ddfdb3cf642d51858d81472b71e77fd4fb409699f4e9072faf5ae3b4cf9/flake8-todo-0.7.tar.gz";
-      sha256 = "05arm0sch3r8248035kilmf01z0mxsahw6vpbbz0d343zy8m8k3f";
-    };
-  };
-  "functools32" = super.buildPythonPackage {
-    name = "functools32-3.2.3.post2";
-    doCheck = false;
-    src = fetchurl {
-      url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/c5/60/6ac26ad05857c601308d8fb9e87fa36d0ebf889423f47c3502ef034365db/functools32-3.2.3-2.tar.gz";
-      sha256 = "0v8ya0b58x47wp216n1zamimv4iw57cxz3xxhzix52jkw3xks9gn";
-    };
-  };
   "future" = super.buildPythonPackage {
     name = "future-0.13.1";
     doCheck = false;
@@ -1959,26 +1824,23 @@ self: super: {
     };
   };
   "isort" = super.buildPythonPackage {
-    name = "isort-4.3.18";
+    name = "isort-4.3.20";
     doCheck = false;
     propagatedBuildInputs = [
       self."backports.functools-lru-cache"
       self."futures"
     ];
     src = fetchurl {
-      url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/b5/3e/22308cdac59f5ef0e8157a33a01eb611e7a3a93e9711ed88ffc9a5b73ba0/isort-4.3.18.tar.gz";
-      sha256 = "0w0qgmxszrrjxs0szz5w9qac7lpkignssdg6mf95akhixgv136gh";
+      url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/f1/84/5d66ddbe565e36682c336c841e51430384495b272c622ac229029f671be2/isort-4.3.20.tar.gz";
+      sha256 = "0ahqw2fwpnfcydjvay09smhkhfbsiclzwmqjkjrvnqjipjv481y4";
     };
   };
-  "jsonschema" = super.buildPythonPackage {
-    name = "jsonschema-2.6.0";
+  "lazy-object-proxy" = super.buildPythonPackage {
+    name = "lazy-object-proxy-1.4.1";
     doCheck = false;
-    propagatedBuildInputs = [
-      self."functools32"
-    ];
     src = fetchurl {
-      url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/58/b9/171dbb07e18c6346090a37f03c7e74410a1a56123f847efed59af260a298/jsonschema-2.6.0.tar.gz";
-      sha256 = "00kf3zmpp9ya4sydffpifn0j0mzm342a2vzh82p6r0vh10cg7xbg";
+      url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/ad/57/a36f682668ffc453e86ddfb5a2a49848edcb7bd04a210a5a8692a48ed9c4/lazy-object-proxy-1.4.1.tar.gz";
+      sha256 = "0wbsaaj2dgsx187imwyqs7xbigbxnh3shkqapiw996ydi5h3z9sb";
     };
   };
   "lxml" = super.buildPythonPackage {
@@ -3684,22 +3546,6 @@ self: super: {
       sha256 = "0n11r0zgs9vrlz6yygzvg0gh6pcg7z418nd7yg099amkdsm15sj4";
     };
   };
-  "plone.recipe.codeanalysis" = super.buildPythonPackage {
-    name = "plone.recipe.codeanalysis-3.0.1";
-    doCheck = false;
-    propagatedBuildInputs = [
-      self."check-manifest"
-      self."flake8"
-      self."lxml"
-      self."setuptools"
-      self."zc.buildout"
-      self."zc.recipe.egg"
-    ];
-    src = fetchurl {
-      url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/5e/20/79bda8c4c438377f62b3567495972efe38ba05cf4ae3b71d074d6fdbb4b9/plone.recipe.codeanalysis-3.0.1.tar.gz";
-      sha256 = "1pmlaxdl2zv3v6515f71908313d31kffv5niag4fmpxasf1vqlff";
-    };
-  };
   "plone.recipe.zope2instance" = super.buildPythonPackage {
     name = "plone.recipe.zope2instance-4.4.0";
     doCheck = false;
@@ -4020,19 +3866,75 @@ self: super: {
     };
   };
   "pycodestyle" = super.buildPythonPackage {
-    name = "pycodestyle-2.0.0";
+    name = "pycodestyle-2.5.0";
     doCheck = false;
     src = fetchurl {
-      url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/db/b1/9f798e745a4602ab40bf6a9174e1409dcdde6928cf800d3aab96a65b1bbf/pycodestyle-2.0.0.tar.gz";
-      sha256 = "1rz2v8506mdjdyxcnv9ygiw6v0d4dqx8z5sjyjm0w2v32h5l5w1p";
+      url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/1c/d1/41294da5915f4cae7f4b388cea6c2cd0d6cd53039788635f6875dfe8c72f/pycodestyle-2.5.0.tar.gz";
+      sha256 = "0v4prb05n21bm8650v0a01k1nyqjdmkrsm3zycfxh2j5k9n962p4";
+    };
+  };
+  "pydocstyle" = super.buildPythonPackage {
+    name = "pydocstyle-3.0.0";
+    doCheck = false;
+    propagatedBuildInputs = [
+      self."configparser"
+      self."six"
+      self."snowballstemmer"
+    ];
+    src = fetchurl {
+      url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/e1/e6/a0669df17a97e462915a10a7d6c567658b60eceddebf62a3fb9975c00196/pydocstyle-3.0.0.tar.gz";
+      sha256 = "1m1xv9clkg9lgzyza6dnj359z04vh5g0h49nhzghv7lg81gchhap";
     };
   };
   "pyflakes" = super.buildPythonPackage {
-    name = "pyflakes-1.5.0";
+    name = "pyflakes-2.1.1";
     doCheck = false;
     src = fetchurl {
-      url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/5b/b7/dcd6ebc826065ca4ccd2406aac4378e1df6eb91124625d45d520219932a1/pyflakes-1.5.0.tar.gz";
-      sha256 = "1x1pcca4a24k4pw8x1c77sgi58cg1wl2k38mp8a25k608pzls3da";
+      url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/52/64/87303747635c2988fcaef18af54bfdec925b6ea3b80bcd28aaca5ba41c9e/pyflakes-2.1.1.tar.gz";
+      sha256 = "18pq95a1xj2dgdd0m85gyfsn40jajj4xc3lp8wfv7igqhrc86xnr";
+    };
+  };
+  "pylama" = super.buildPythonPackage {
+    name = "pylama-7.7.1";
+    doCheck = false;
+    propagatedBuildInputs = [
+      self."mccabe"
+      self."pycodestyle"
+      self."pydocstyle"
+      self."pyflakes"
+    ];
+    src = fetchurl {
+      url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/8a/89/082aa9378e382bd8132c3a8a3ef09af71e1c8f5c00cef211583e476ba4df/pylama-7.7.1.tar.gz";
+      sha256 = "13vx7daqz2918y9s8q3v2i3xaq3ah43a9p58srqi6hqskkpm7blv";
+    };
+  };
+  "pylint" = super.buildPythonPackage {
+    name = "pylint-1.9.4";
+    doCheck = false;
+    propagatedBuildInputs = [
+      self."astroid"
+      self."backports.functools-lru-cache"
+      self."configparser"
+      self."isort"
+      self."mccabe"
+      self."singledispatch"
+      self."six"
+    ];
+    src = fetchurl {
+      url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/8f/0b/a2e834d291afeb5a14512eba898d12a39775c05440cc12fb8a4138d311e7/pylint-1.9.4.tar.gz";
+      sha256 = "14ysa4jg1lz5hmaw57qk5qbyz48nn30y29gsva6vbic7ambqa7pf";
+    };
+  };
+  "pyroma" = super.buildPythonPackage {
+    name = "pyroma-2.5";
+    doCheck = false;
+    propagatedBuildInputs = [
+      self."docutils"
+      self."setuptools"
+    ];
+    src = fetchurl {
+      url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/84/88/cc7ff1ec88e74dfde44e6bf529f5af5161a75edc01309e89ea687ff286fa/pyroma-2.5.tar.gz";
+      sha256 = "09ncmrjkbiy1rr5k0kralir2yjrdw7wwqx9bcz2qp0nl83sk5lsl";
     };
   };
   "pyscss" = super.buildPythonPackage {
@@ -4091,6 +3993,20 @@ self: super: {
       sha256 = "19giwgfcrg0nr1gdv49qnmf2jb2ilkcfc7qyqvfpz4dp0p64ksv5";
     };
   };
+  "readme-renderer" = super.buildPythonPackage {
+    name = "readme-renderer-24.0";
+    doCheck = false;
+    propagatedBuildInputs = [
+      self."Pygments"
+      self."bleach"
+      self."docutils"
+      self."six"
+    ];
+    src = fetchurl {
+      url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/44/de/a567140b13a0fc8d3b04d85a510b5a7d9869b44b2939fa8ac07c5e421485/readme_renderer-24.0.tar.gz";
+      sha256 = "0br0562lnvj339f1nwz4nfl4ay49rw05xkqacigzf9wz4mdza5mv";
+    };
+  };
   "repoze.xmliter" = super.buildPythonPackage {
     name = "repoze.xmliter-0.6";
     doCheck = false;
@@ -4108,7 +4024,7 @@ self: super: {
     };
   };
   "requests" = super.buildPythonPackage {
-    name = "requests-2.21.0";
+    name = "requests-2.22.0";
     doCheck = false;
     propagatedBuildInputs = [
       self."certifi"
@@ -4117,8 +4033,8 @@ self: super: {
       self."urllib3"
     ];
     src = fetchurl {
-      url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/52/2c/514e4ac25da2b08ca5a464c50463682126385c4272c18193876e91f4bc38/requests-2.21.0.tar.gz";
-      sha256 = "13jr0wkj9c2j8c0c8iaal9iivi0bpxghnsdn6lxcpnmc657q4ajh";
+      url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/01/62/ddcf76d1d19885e8579acb1b1df26a852b03472c0e46d2b959a714c90608/requests-2.22.0.tar.gz";
+      sha256 = "1d5ybh11jr5sm7xp6mz8fyc7vrp4syifds91m7sj60xalal0gq0i";
     };
   };
   "requests-toolbelt" = super.buildPythonPackage {
@@ -4197,6 +4113,17 @@ self: super: {
       sha256 = "1v3pwivjmhdcrfq2v4x2pbfjr1x3ynvv4ifj0v67k4m7w8207gzp";
     };
   };
+  "scimschema" = super.buildPythonPackage {
+    name = "scimschema-0.2.0.dev0";
+    doCheck = false;
+    propagatedBuildInputs = [
+      self."setuptools"
+    ];
+    src = fetchurl {
+      url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/scimschema/0.2.0.dev0/scimschema-0.2.0.dev0.tar.gz";
+      sha256 = "1ily9cr1jv7bjgf10gcazqrjwi12pyb98q9n4bb99im6xdbsf2a7";
+    };
+  };
   "selenium" = super.buildPythonPackage {
     name = "selenium-3.141.0";
     doCheck = false;
@@ -4220,11 +4147,22 @@ self: super: {
     };
   };
   "setuptools-scm" = super.buildPythonPackage {
-    name = "setuptools-scm-3.2.0";
+    name = "setuptools-scm-3.3.3";
     doCheck = false;
     src = fetchurl {
-      url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/54/85/514ba3ca2a022bddd68819f187ae826986051d130ec5b972076e4f58a9f3/setuptools_scm-3.2.0.tar.gz";
-      sha256 = "0n3knn3p1sqlx31k2lahn7z9bacvlv8nhlfidj77vz50bxqlgasj";
+      url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/83/44/53cad68ce686585d12222e6769682c4bdb9686808d2739671f9175e2938b/setuptools_scm-3.3.3.tar.gz";
+      sha256 = "19cyndx23xmpbhz4qrwmfwsmnnaczd0dw7qg977ksq2dbvxy29dx";
+    };
+  };
+  "singledispatch" = super.buildPythonPackage {
+    name = "singledispatch-3.4.0.3";
+    doCheck = false;
+    propagatedBuildInputs = [
+      self."six"
+    ];
+    src = fetchurl {
+      url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/d9/e9/513ad8dc17210db12cb14f2d4d190d618fb87dd38814203ea71c87ba5b68/singledispatch-3.4.0.3.tar.gz";
+      sha256 = "171b7ip0hsq5qm83np40h3phlr36ym18w0lay0a8v08kvy3sy1jv";
     };
   };
   "six" = super.buildPythonPackage {
@@ -4233,6 +4171,14 @@ self: super: {
     src = fetchurl {
       url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/dd/bf/4138e7bfb757de47d1f4b6994648ec67a51efe58fa907c1e11e350cddfca/six-1.12.0.tar.gz";
       sha256 = "0wxs1q74v07ssjywbbm7x6h5v9qx209ld2yfsif4060sxi0h2sni";
+    };
+  };
+  "snowballstemmer" = super.buildPythonPackage {
+    name = "snowballstemmer-1.2.1";
+    doCheck = false;
+    src = fetchurl {
+      url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/20/6b/d2a7cb176d4d664d94a6debf52cd8dbae1f7203c8e42426daa077051d59c/snowballstemmer-1.2.1.tar.gz";
+      sha256 = "0a0idq4y5frv7qsg2x62jd7rd272749xk4x99misf5rcifk2d7wi";
     };
   };
   "tempstorage" = super.buildPythonPackage {
@@ -4251,14 +4197,6 @@ self: super: {
       sha256 = "1i2ppxz4vn9nj2zab9i0ca8g11bb4ls52j5w1lchzxl8d69i0n5y";
     };
   };
-  "testfixtures" = super.buildPythonPackage {
-    name = "testfixtures-6.8.2";
-    doCheck = false;
-    src = fetchurl {
-      url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/ba/6f/5b664c91f0cde2801454c1a5ad7510ce64da64a0f5570f678dff76ac9a1f/testfixtures-6.8.2.tar.gz";
-      sha256 = "1dv109n0k2h9l945s8dlj4z4715x9agp4qg8qynybmhbm0s5dsd6";
-    };
-  };
   "toml" = super.buildPythonPackage {
     name = "toml-0.10.0";
     doCheck = false;
@@ -4268,11 +4206,11 @@ self: super: {
     };
   };
   "tqdm" = super.buildPythonPackage {
-    name = "tqdm-4.31.1";
+    name = "tqdm-4.32.1";
     doCheck = false;
     src = fetchurl {
-      url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/80/9b/f3036a9a11c250eb51d38acf94d1d7c33a0d4da8a8931bfdf15e12d505b1/tqdm-4.31.1.tar.gz";
-      sha256 = "01fdks20qx09xw3zdxda6ybiqlycjy8zppgnc8izfqg9xgipfag2";
+      url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/36/64/071ce46cbb8cd02e5fa88cc6abf31e51724db858a5ffb3f56dc1c6311f3a/tqdm-4.32.1.tar.gz";
+      sha256 = "1azpl14b8zc0qfw5r67a8dw7gwd35v1acfg55y0v9nrzd3r0p1ha";
     };
   };
   "transaction" = super.buildPythonPackage {
@@ -4338,6 +4276,22 @@ self: super: {
       sha256 = "07cnvvlpif7a6cg4rav39zq8fxa5pfqawchr46433pij0y6napwn";
     };
   };
+  "webencodings" = super.buildPythonPackage {
+    name = "webencodings-0.5.1";
+    doCheck = false;
+    src = fetchurl {
+      url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/0b/02/ae6ceac1baeda530866a85075641cec12989bd8d31af6d5ab4a3e8c92f47/webencodings-0.5.1.tar.gz";
+      sha256 = "08qrgrc4hrximb2gqnl69g01s93rhf2842jfxdjljc1dbwj1qsmk";
+    };
+  };
+  "wheel" = super.buildPythonPackage {
+    name = "wheel-0.33.4";
+    doCheck = false;
+    src = fetchurl {
+      url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/1d/b0/f478e80aeace42fe251225a86752799174a94314c4a80ebfc5bf0ab1153a/wheel-0.33.4.tar.gz";
+      sha256 = "0r95020hjslzvmqd9973p55zzgz4j2qhgg6c74jp4nsvsh1zmz32";
+    };
+  };
   "wicked" = super.buildPythonPackage {
     name = "wicked-1.1.12";
     doCheck = false;
@@ -4356,12 +4310,12 @@ self: super: {
       sha256 = "0niyar73drhdld8xf2ysl1wpa550ixsbc2a958b9w3gqm8drq366";
     };
   };
-  "yapf" = super.buildPythonPackage {
-    name = "yapf-0.27.0";
+  "wrapt" = super.buildPythonPackage {
+    name = "wrapt-1.11.1";
     doCheck = false;
     src = fetchurl {
-      url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/0c/ad/1dd7e729e9d707c602267ed9a6ca9b771a507862f85456bf18f5fff8f0d1/yapf-0.27.0.tar.gz";
-      sha256 = "18a7n85xv0qrab2ck94kw92ncjq2l8vl0k34pm22rjvd8h6gixil";
+      url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/67/b2/0f71ca90b0ade7fad27e3d20327c996c6252a2ffe88f50a95bba7434eda9/wrapt-1.11.1.tar.gz";
+      sha256 = "0cqmysny1pz01jw26q48q5zasvns6507rwhgm6wcw743f0r01sja";
     };
   };
   "z3c.autoinclude" = super.buildPythonPackage {

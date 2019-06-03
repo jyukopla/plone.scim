@@ -1,18 +1,42 @@
 { pkgs ? import (fetchTarball {
-    url = "https://github.com/NixOS/nixpkgs-channels/archive/7bb74e653654dbf9206e751574b5132b15f46bb5.tar.gz";
-    sha256 = "1dbdy4f58yqz4l67n032184rx7ci94hx3wl52c8h2bg06awkzq87";
+    url = "https://github.com/NixOS/nixpkgs-channels/archive/36516712916ebb7475cf3fb5da3a7df6230a60e7.tar.gz";
+    sha256 = "1vaqh7i7qd68wkcj8lzjzrv7s5zzpw1lz30r9jr7wf1y2ssikci5";
   }) {}
- , setup ? import (fetchTarball {
-    url = "https://github.com/datakurre/setup.nix/archive/b453d65d700bf1e709538c03f5c67c3a01f6d406.tar.gz";
-    sha256 = "07qavdvv4qxs3fcvb6dwlyh23bvc0dgwx4pw339rsdv21zg60cv2";
+, setup ? import (fetchTarball {
+    url = "https://github.com/datakurre/setup.nix/archive/e835238aed6a0058cf3fd0f3d6ae603532db5cb4.tar.gz";
+    sha256 = "0gak3pg5nrrhxj2cws313jz80pmdys047ypnyhagvrfry5a9wa48";
   })
-#, setup ? import ../setup.nix
+# , setup ? import ../setup.nix
+, plone ? "plone52"
 , python ? "python3"
 , pythonPackages ? builtins.getAttr (python + "Packages") pkgs
-, requirements ? ./requirements.nix
+, requirements ? ./. + "/requirements-${plone}-${python}.nix"
 }:
 
 let overrides = self: super: {
+
+  "plone.recipe.zope2instance" = null;
+
+  "flake8" = super."flake8".overridePythonAttrs(old: {
+    doCheck = false;
+  });
+
+  "scimschema" = super."scimschema".overridePythonAttrs(old: {
+    buildInputs = [ self."pytest-runner" ];
+  });
+
+# "pylama" = super."pylama".overridePythonAttrs(old: {
+#   propagatedBuildInputs = [ self."pylint" ];
+# });
+
+# "robotframework" = super."robotframework".overridePythonAttrs(old: {
+#   nativeBuildInputs = [ pkgs."unzip" ];
+# });
+
+  # TODO: add to setup.nix default overrides
+  "lazy-object-proxy" = super."lazy-object-proxy".overridePythonAttrs(old: {
+    nativeBuildInputs = [ self."setuptools-scm" ];
+  });
 
   # TODO: why tests failed with Plone 4.3 versions...
   "funcsigs" = super."funcsigs".overridePythonAttrs(old: {
@@ -22,11 +46,6 @@ let overrides = self: super: {
   # TODO: why tests failed with Plone 4.3 versions...
   "mock" = super."mock".overridePythonAttrs(old: {
     doCheck = false;
-  });
-
-  # Should be fixed with new plone.dexterity release
-  "plone.dexterity" = super."plone.dexterity".overridePythonAttrs(old: {
-    patches = if old.name != "plone.dexterity-2.2.8" then [ ./plone.dexterity.102.patch ] else [];
   });
 
   "plone.testing" = super."plone.testing".overridePythonAttrs(old: {
@@ -41,13 +60,17 @@ let overrides = self: super: {
 
   # should be fixed by updating jsonschema
   "jsonschema" = super."jsonschema".overridePythonAttrs(old: {
-    nativeBuildInputs = [ self."vcversioner" ];
+    nativeBuildInputs = [ self."vcversioner" self."setuptools-scm" ];
   });
 
   # should be fixed by updating nixpkgs
   "testfixtures" = super."testfixtures".overridePythonAttrs(old: {
     patches = [];
   });
+
+  wheel = pythonPackages."wheel".overridePythonAttrs(old:
+    with super."wheel"; { inherit propagatedBuildInputs; }
+  );
 
   # fix zc.buildout to generate scripts with nix wrapped python env
   "zc.buildout" = pythonPackages.zc_buildout_nix.overridePythonAttrs (old: {
@@ -70,6 +93,7 @@ let overrides = self: super: {
 in setup {
   inherit pkgs pythonPackages overrides;
   src = requirements;
+  requirements = requirements;
   buildInputs = with pkgs; [
     firefox
     geckodriver
@@ -77,5 +101,7 @@ in setup {
   force = true;
   shellHook = ''
     export PYTHONPATH=$(pwd)/src:$PYTHONPATH
+    export PLONE=${plone}
+    export PYTHON=${python}
   '';
 }

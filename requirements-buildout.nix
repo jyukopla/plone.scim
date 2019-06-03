@@ -95,11 +95,11 @@ self: super: {
     };
   };
   "setuptools-scm" = super.buildPythonPackage {
-    name = "setuptools-scm-3.2.0";
+    name = "setuptools-scm-3.3.3";
     doCheck = false;
     src = fetchurl {
-      url = "https://files.pythonhosted.org/packages/54/85/514ba3ca2a022bddd68819f187ae826986051d130ec5b972076e4f58a9f3/setuptools_scm-3.2.0.tar.gz";
-      sha256 = "0n3knn3p1sqlx31k2lahn7z9bacvlv8nhlfidj77vz50bxqlgasj";
+      url = "https://files.pythonhosted.org/packages/83/44/53cad68ce686585d12222e6769682c4bdb9686808d2739671f9175e2938b/setuptools_scm-3.3.3.tar.gz";
+      sha256 = "19cyndx23xmpbhz4qrwmfwsmnnaczd0dw7qg977ksq2dbvxy29dx";
     };
   };
   "six" = super.buildPythonPackage {

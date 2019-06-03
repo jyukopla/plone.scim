@@ -5,7 +5,6 @@ from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_ROLES
 from plone.scim.testing import PLONE_SCIM_INTEGRATION_TESTING  # noqa: E501
 from Products.CMFCore.utils import getToolByName
-
 import unittest
 
 
@@ -22,23 +21,23 @@ class TestSetup(unittest.TestCase):
 
     def setUp(self):
         """Custom shared utility setup for tests."""
-        self.portal = self.layer['portal']
+        self.portal = self.layer["portal"]
         if get_installer:
-            self.installer = get_installer(self.portal, self.layer['request'])
+            self.installer = get_installer(self.portal, self.layer["request"])
         else:
             self.installer = getToolByName(  # noqa: P001
-                self.portal,
-                'portal_quickinstaller',
+                self.portal, "portal_quickinstaller"
             )
 
     def test_product_installed(self):
         """Test if plone.scim is installed."""
-        self.assertTrue(self.installer.isProductInstalled('plone.scim'))
+        self.assertTrue(self.installer.isProductInstalled("plone.scim"))
 
     def test_browserlayer(self):
         """Test that IPloneScimLayer is registered."""
-        from plone.scim.interfaces import (IPloneScimLayer)
+        from plone.scim.interfaces import IPloneScimLayer
         from plone.browserlayer import utils
+
         self.assertIn(IPloneScimLayer, utils.registered_layers())
 
 
@@ -47,25 +46,24 @@ class TestUninstall(unittest.TestCase):
     layer = PLONE_SCIM_INTEGRATION_TESTING
 
     def setUp(self):
-        self.portal = self.layer['portal']
+        self.portal = self.layer["portal"]
         if get_installer:
-            self.installer = get_installer(self.portal, self.layer['request'])
+            self.installer = get_installer(self.portal, self.layer["request"])
         else:
             self.installer = getToolByName(  # noqa: P001
-                self.portal,
-                'portal_quickinstaller',
+                self.portal, "portal_quickinstaller"
             )
-        setRoles(self.portal, TEST_USER_ID, ['Manager'])
-        self.installer.uninstallProducts(['plone.scim'])
+        setRoles(self.portal, TEST_USER_ID, ["Manager"])
+        self.installer.uninstallProducts(["plone.scim"])
         setRoles(self.portal, TEST_USER_ID, TEST_USER_ROLES)
 
     def test_product_uninstalled(self):
         """Test if plone.scim is cleanly uninstalled."""
-        self.assertFalse(self.installer.isProductInstalled('plone.scim'))
+        self.assertFalse(self.installer.isProductInstalled("plone.scim"))
 
     def test_browserlayer_removed(self):
         """Test that IPloneScimLayer is removed."""
-        from plone.scim.interfaces import \
-            IPloneScimLayer
+        from plone.scim.interfaces import IPloneScimLayer
         from plone.browserlayer import utils
+
         self.assertNotIn(IPloneScimLayer, utils.registered_layers())

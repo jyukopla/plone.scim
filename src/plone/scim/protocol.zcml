@@ -4,21 +4,57 @@
     i18n_domain="plone.scim">
 
   <plone:service
-    name="@scim"
-    method="GET"
-    accept="application/json"
-    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-    factory=".protocol.Get"
-    permission="zope2.View"
-    />
+      name="@scim"
+      method="GET"
+      accept="application/json"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      factory=".protocol.Get"
+      permission="zope2.View"
+      />
 
   <plone:service
-    name="@scim"
-    method="GET"
-    accept="application/scim+json"
-    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-    factory=".protocol.Get"
-    permission="zope2.View"
-  />
+      name="@scim"
+      method="GET"
+      accept="application/scim+json"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      factory=".protocol.Get"
+      permission="zope2.View"
+      />
+
+  <plone:service
+      name="@scim"
+      method="POST"
+      accept="application/json"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      factory=".protocol.Post"
+      permission="zope2.View"
+      />
+
+  <plone:service
+      name="@scim"
+      method="POST"
+      accept="application/scim+json"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      factory=".protocol.Post"
+      permission="zope2.View"
+      />
+
+  <plone:service
+      name="@scim"
+      method="PUT"
+      accept="application/json"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      factory=".protocol.Put"
+      permission="zope2.View"
+      />
+
+  <plone:service
+      name="@scim"
+      method="PUT"
+      accept="application/scim+json"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      factory=".protocol.Put"
+      permission="zope2.View"
+      />
 
 </configure>

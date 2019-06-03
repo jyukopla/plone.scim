@@ -3,7 +3,7 @@
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 
 
-BASE_PATH = '@scim'  # registered in protocol.zcml
+BASE_PATH = "@scim"  # registered in protocol.zcml
 
 
 class IPloneScimLayer(IDefaultBrowserLayer):

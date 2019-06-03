@@ -7,9 +7,9 @@
 INDEX_URL ?= https://repo.kopla.jyu.fi/api/pypi/pypi/simple
 INDEX_HOSTNAME ?= repo.kopla.jyu.fi
 
+PLONE ?= plone52
 PYTHON ?= python3
-REQUIREMENTS ?= p52-py3
-BUILDOUT_CFG ?= buildout.cfg
+BUILDOUT_CFG ?= test_$(PLONE).cfg
 BUILDOUT_ARGS ?= -N
 PYBOT_ARGS ?=
 
@@ -19,21 +19,22 @@ all: .installed.cfg
 # Cannot be --pure to allow configuring CI build with environment variables
 nix-%: .netrc
 	nix-shell --option netrc-file .netrc setup.nix -A develop \
-	--argstr python $(PYTHON) \
-	--arg requirements ./requirements-$(REQUIREMENTS).nix \
+	--argstr plone $(PLONE) --argstr python $(PYTHON) \
 	--run "$(MAKE) $*"
 
 .PHONY: nix-shell
 nix-shell:
 	nix-shell --pure setup.nix -A develop \
-	--argstr python $(PYTHON) \
-	--arg requirements ./requirements-$(REQUIREMENTS).nix
+	--argstr plone $(PLONE) --argstr python $(PYTHON)
 
 build: result
 
 .PHONY: check
 check: .installed.cfg
-	bin/code-analysis
+ifeq ($(PYTHON), python3)
+	black -t py27 -t py36 -t py37 --check src
+	pylama src tests
+endif
 
 .PHONY: clean
 clean:
@@ -49,12 +50,14 @@ dist:
 
 .PHONY: docs
 docs: .installed.cfg
-	bin/pocompile
+	bin/pocompile src
 	LANGUAGE=fi bin/sphinx-build docs html
 
 .PHONY: format
 format: .installed.cfg
-	bin/yapf -r -i src
+ifeq ($(PYTHON), python3)
+	black -t py27 src
+endif
 	bin/isort -rc -y src
 
 .PHONY: show
@@ -99,24 +102,25 @@ netrc: .netrc
 
 result:
 	nix-build --option netrc-file .netrc setup.nix -A env \
-	--argstr python $(PYTHON) \
-	--arg requirements ./requirements-$(REQUIREMENTS).nix
+	--argstr plone $(PLONE) --argstr python $(PYTHON)
 
-requirements.txt: BUILDOUT_ARGS=buildout:overwrite-requirements-file=true
-requirements.txt: requirements-buildout.nix
+requirements-$(PLONE)-$(PYTHON).txt: BUILDOUT_ARGS=-n buildout:overwrite-requirements-file=true buildout:dump-requirements-file=requirements-$(PLONE)-$(PYTHON).txt
+requirements-$(PLONE)-$(PYTHON).txt: requirements-buildout.nix
 	nix-shell --pure --option netrc-file .netrc \
 	setup.nix -A develop \
-	--argstr python $(PYTHON) \
+	--argstr plone $(PLONE) --argstr python $(PYTHON) \
 	--arg requirements ./requirements-buildout.nix  \
 	--run "buildout -c $(BUILDOUT_CFG) $(BUILDOUT_ARGS)"
 
-requirements.nix: requirements.txt requirements-buildout.txt
+requirements: requirements-$(PLONE)-$(PYTHON).nix
+requirements-$(PLONE)-$(PYTHON).nix: requirements-$(PLONE)-$(PYTHON).txt requirements-buildout.txt
 	@make netrc
 	HOME=$(PWD) NIX_CONF_DIR=$(PWD) nix-shell -p libffi nix \
-	--run 'nix-shell setup.nix -A pip2nix --argstr python $(PYTHON) \
-	--run "pip2nix generate -r requirements.txt -r requirements-buildout.txt \
+	--run 'nix-shell setup.nix -A pip2nix \
+	--argstr plone $(PLONE) --argstr python $(PYTHON) \
+	--run "pip2nix generate -r requirements-$(PLONE)-$(PYTHON).txt -r requirements-buildout.txt \
 	--index-url $(INDEX_URL) \
-	--output=requirements.nix"'
+	--output=requirements-$(PLONE)-$(PYTHON).nix"'
 
 requirements-buildout.nix: requirements-buildout.txt
 	nix-shell --pure -p libffi nix \

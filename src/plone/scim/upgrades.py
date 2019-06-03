@@ -3,7 +3,5 @@ from plone.app.upgrade.utils import loadMigrationProfile
 
 
 def reload_gs_profile(context):
-    loadMigrationProfile(
-        context,
-        'profile-plone.scim:default',
-    )
+    """Implement upgrade step for reloading plone.scim GS profile."""
+    loadMigrationProfile(context, "profile-plone.scim:default")
