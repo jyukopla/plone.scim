@@ -6,37 +6,20 @@
 *.swp
 # dirs
 bin/
-buildout-cache/
 develop-eggs/
 eggs/
-htmlcov/
-include/
-lib/
-local/
-node_modules/
+extras/
+netrc
 parts/
-src/*
-dist/*
-test.plone_addon/
 var/
+result
 # files
 .installed.cfg
 .mr.developer.cfg
-Gruntfile.js
-lib64
 log.html
 output.xml
-package.json
-pip-selfcheck.json
 report.html
-.vscode/
-.tox/
-reports/
-# excludes
-!.coveragerc
-!.editorconfig
-!.gitattributes
-!.gitignore
-!.gitkeep
-!.travis.yml
-!src/plone
+requirements.txt
+.cache/
+.idea/
+.netrc

@@ -7,15 +7,9 @@
 
   <i18n:registerTranslations directory="locales" />
 
-  <!--
-    Be careful if you use general includeDependencies, it can have sideffects!
-    Better import explicite packages or configurations ;)
-  -->
-  <!--<includeDependencies package="." />-->
+  <include package="plone.rest" />
 
-  <include package=".browser" />
-
-  <include file="permissions.zcml" />
+  <include file="protocol.zcml" />
 
   <include file="upgrades.zcml" />
 

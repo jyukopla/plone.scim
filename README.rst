@@ -26,6 +26,10 @@ Documentation
 
 Full documentation for end users can be found in the "docs" folder, and is also available online at http://docs.plone.org/foo/bar
 
+* https://tools.ietf.org/html/rfc7642
+* https://tools.ietf.org/html/rfc7643
+* https://tools.ietf.org/html/rfc7644
+
 
 Translations
 ------------
