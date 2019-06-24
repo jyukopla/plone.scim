@@ -218,12 +218,12 @@ class UsersGet(ScimView):
 
 def get_login(data):
     """Return login name from SCIM User."""
-    return data["userName"]
+    return data["userName"] or data.get("externalId")
 
 
 def get_external_id(data):
     """Return external_id name from SCIM User."""
-    return data["externalId"]
+    return data.get("externalId")
 
 
 def get_fullname(data):
