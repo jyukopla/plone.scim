@@ -73,9 +73,9 @@ astroid==1.6.6
 backports.functools-lru-cache==1.5
 bleach==3.1.0
 borg.localrole==3.0.3
-certifi==2019.3.9
+certifi==2019.6.16
 chardet==3.0.4
-check-manifest==0.38
+check-manifest==0.39
 collective.elephantvocabulary==0.2.5
 collective.monkeypatcher==1.1.5
 collective.recipe.template==1.13
@@ -236,7 +236,7 @@ unittest2==0.5.1
 webencodings==0.5.1
 wheel==0.33.4
 wicked==1.1.12
-wrapt==1.11.1
+wrapt==1.11.2
 z3c.autoinclude==0.3.7
 z3c.caching==2.0
 z3c.form==3.2.11
@@ -288,6 +288,7 @@ zope.formlib==4.3.0
 zope.globalrequest==1.2
 zope.i18n==3.7.4
 zope.i18nmessageid==3.5.3
+zope.index==3.6.4
 zope.interface==3.6.7
 zope.intid==3.7.2
 zope.keyreference==3.6.4

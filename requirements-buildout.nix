@@ -20,6 +20,14 @@ self: super: {
       sha256 = "0rdv0n2aa181mkrybwvl3czkrrikgzd4y2cri6j735fwhj65nlz9";
     };
   };
+  "asn1crypto" = super.buildPythonPackage {
+    name = "asn1crypto-0.24.0";
+    doCheck = false;
+    src = fetchurl {
+      url = "https://files.pythonhosted.org/packages/fc/f1/8db7daa71f414ddabfa056c4ef792e1461ff655c2ae2928a2b675bfed6b4/asn1crypto-0.24.0.tar.gz";
+      sha256 = "0jaf8rf9dx1lf23xfv2cdd5h52f1qr3w8k63985bc35g3d220p4x";
+    };
+  };
   "buildout-requirements" = super.buildPythonPackage {
     name = "buildout-requirements-0.2.2";
     doCheck = false;
@@ -30,6 +38,30 @@ self: super: {
     src = fetchurl {
       url = "https://files.pythonhosted.org/packages/c1/28/2b3103f6d8f3145f310337fd9ec286724878332020c06da34a8c2de3c71d/buildout.requirements-0.2.2.tar.gz";
       sha256 = "1v4vcl7qbvgs8dwbclsnhxdxzjka5gjj197qbnv9p5r4pci2hq8j";
+    };
+  };
+  "cffi" = super.buildPythonPackage {
+    name = "cffi-1.12.3";
+    doCheck = false;
+    propagatedBuildInputs = [
+      self."pycparser"
+    ];
+    src = fetchurl {
+      url = "https://files.pythonhosted.org/packages/93/1a/ab8c62b5838722f29f3daffcc8d4bd61844aa9b5f437341cc890ceee483b/cffi-1.12.3.tar.gz";
+      sha256 = "0x075521fxwv0mfp4cqzk7lvmw4n94bjw601qkcv314z5s182704";
+    };
+  };
+  "cryptography" = super.buildPythonPackage {
+    name = "cryptography-2.7";
+    doCheck = false;
+    propagatedBuildInputs = [
+      self."asn1crypto"
+      self."cffi"
+      self."six"
+    ];
+    src = fetchurl {
+      url = "https://files.pythonhosted.org/packages/c2/95/f43d02315f4ec074219c6e3124a87eba1d2d12196c2767fadfdc07a83884/cryptography-2.7.tar.gz";
+      sha256 = "1inlnr36kl36551c9rcad99jmhk81v33by3glkadwdcgmi17fd76";
     };
   };
   "eggtestinfo" = super.buildPythonPackage {
@@ -62,6 +94,14 @@ self: super: {
     src = fetchurl {
       url = "https://files.pythonhosted.org/packages/81/1a/6b2971adc1bca55b9a53ed1efa372acff7e8b9913982a396f3fa046efaf8/Pillow-6.0.0.tar.gz";
       sha256 = "1dgbhamlr5gxk9avfvmq3ivqqp6w9fpp2grinpbvqb03x4n0m740";
+    };
+  };
+  "pycparser" = super.buildPythonPackage {
+    name = "pycparser-2.19";
+    doCheck = false;
+    src = fetchurl {
+      url = "https://files.pythonhosted.org/packages/68/9e/49196946aee219aead1290e00d1e7fdeab8567783e83e1b9ab5585e6206a/pycparser-2.19.tar.gz";
+      sha256 = "1cr5dcj9628lkz1qlwq3fv97c25363qppkmcayqvd05dpy573259";
     };
   };
   "pyscss" = super.buildPythonPackage {

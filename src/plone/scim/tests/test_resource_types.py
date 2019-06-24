@@ -16,10 +16,6 @@ class TestResourceTypes(unittest.TestCase):
     def test_resource_types_endpoint(self):
         url = "/".join([self.portal.absolute_url(), BASE_PATH, "ResourceTypes"])
 
-        response = requests.get(url, headers=dict(Accept="application/json"))
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.headers.get("Content-Type"), "application/json")
-
         response = requests.get(url, headers=dict(Accept="application/scim+json"))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.headers.get("Content-Type"), "application/scim+json")

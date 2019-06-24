@@ -5,21 +5,22 @@
 *.py?
 *.swp
 # dirs
+.cache/
+.idea/
 bin/
 develop-eggs/
+env
 eggs/
 extras/
-netrc
 parts/
 var/
-result
 # files
 .installed.cfg
 .mr.developer.cfg
+.netrc
 log.html
+netrc
 output.xml
 report.html
 requirements.txt
-.cache/
-.idea/
-.netrc
+result
