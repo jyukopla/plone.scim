@@ -258,7 +258,7 @@ class GroupsGet(ScimView):
 
 def get_group_id(data):
     """Return group_id name from SCIM Group."""
-    return data["id"]
+    return data["id"] or data.get("externalId")
 
 
 def get_external_id(data):
@@ -291,6 +291,8 @@ class CreateGroup(ScimView):
         external_id = get_external_id(data)
         display_name = get_display_name(data)
         members = get_added_members(data)
+
+        assert group_id, "'id' or 'externalId' is required"
 
         # Create group
         groups = get_source_groups(self.context)
