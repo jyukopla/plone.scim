@@ -57,4 +57,22 @@
       permission="zope2.View"
       />
 
+  <plone:service
+      name="@scim"
+      method="DELETE"
+      accept="application/json"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      factory=".protocol.Delete"
+      permission="zope2.View"
+      />
+
+  <plone:service
+      name="@scim"
+      method="DELETE"
+      accept="application/scim+json"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      factory=".protocol.Delete"
+      permission="zope2.View"
+      />
+
 </configure>

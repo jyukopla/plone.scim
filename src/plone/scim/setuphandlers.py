@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
+from BTrees import OOBTree
+from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.interfaces import INonInstallable
 from zope.interface import implementer
-
-
-# pylama:ignore=W0613
-# W0613         Unused argument 'request'
 
 
 @implementer(INonInstallable)
@@ -18,9 +16,25 @@ class HiddenProfiles(object):
 
 def post_install(context):
     """Implement post install script."""
-    # Do something at the end of the installation of this package.
+    acl_users = getToolByName(context, name="acl_users")
+
+    source_users = acl_users["source_users"]
+    source_users._externalid_to_login = OOBTree.OOBTree()  # noqa
+    source_users._login_to_externalid = OOBTree.OOBTree()  # noqa
+
+    source_groups = acl_users["source_groups"]
+    source_groups._externalid_to_groupid = OOBTree.OOBTree()  # noqa
+    source_groups._groupid_to_externalid = OOBTree.OOBTree()  # noqa
 
 
 def uninstall(context):
     """Implement uninstall script."""
-    # Do something at the end of the uninstallation of this package.
+    acl_users = getToolByName(context, name="acl_users")
+
+    source_users = acl_users["source_users"]
+    delattr(source_users, "_externalid_to_login")
+    delattr(source_users, "_login_to_externalid")
+
+    source_groups = acl_users["source_groups"]
+    delattr(source_groups, "_externalid_to_groupid")
+    delattr(source_groups, "_groupid_to_externalid")

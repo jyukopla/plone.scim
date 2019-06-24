@@ -1396,6 +1396,14 @@ self: super: {
       sha256 = "0rdv0n2aa181mkrybwvl3czkrrikgzd4y2cri6j735fwhj65nlz9";
     };
   };
+  "asn1crypto" = super.buildPythonPackage {
+    name = "asn1crypto-0.24.0";
+    doCheck = false;
+    src = fetchurl {
+      url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/fc/f1/8db7daa71f414ddabfa056c4ef792e1461ff655c2ae2928a2b675bfed6b4/asn1crypto-0.24.0.tar.gz";
+      sha256 = "0jaf8rf9dx1lf23xfv2cdd5h52f1qr3w8k63985bc35g3d220p4x";
+    };
+  };
   "astroid" = super.buildPythonPackage {
     name = "astroid-1.6.6";
     doCheck = false;
@@ -1467,11 +1475,22 @@ self: super: {
     };
   };
   "certifi" = super.buildPythonPackage {
-    name = "certifi-2019.3.9";
+    name = "certifi-2019.6.16";
     doCheck = false;
     src = fetchurl {
-      url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/06/b8/d1ea38513c22e8c906275d135818fee16ad8495985956a9b7e2bb21942a1/certifi-2019.3.9.tar.gz";
-      sha256 = "1bnpw7hrf9i1l9gfxjnzi45hkrvzz0pyn9ia8m4mw7sxhgb08qdj";
+      url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/c5/67/5d0548226bcc34468e23a0333978f0e23d28d0b3f0c71a151aef9c3f7680/certifi-2019.6.16.tar.gz";
+      sha256 = "159nhzjk8r98agk8p2130aygjcd2qc9lw84m2dxmg7qb7ak3npll";
+    };
+  };
+  "cffi" = super.buildPythonPackage {
+    name = "cffi-1.12.3";
+    doCheck = false;
+    propagatedBuildInputs = [
+      self."pycparser"
+    ];
+    src = fetchurl {
+      url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/93/1a/ab8c62b5838722f29f3daffcc8d4bd61844aa9b5f437341cc890ceee483b/cffi-1.12.3.tar.gz";
+      sha256 = "0x075521fxwv0mfp4cqzk7lvmw4n94bjw601qkcv314z5s182704";
     };
   };
   "chardet" = super.buildPythonPackage {
@@ -1483,14 +1502,14 @@ self: super: {
     };
   };
   "check-manifest" = super.buildPythonPackage {
-    name = "check-manifest-0.38";
+    name = "check-manifest-0.39";
     doCheck = false;
     propagatedBuildInputs = [
       self."toml"
     ];
     src = fetchurl {
-      url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/3d/c3/99f1dc28ef1b743fd8b53c7fd07bb1502ec658a495b8d2e0f02610d6c2f7/check-manifest-0.38.tar.gz";
-      sha256 = "08xkgx4a2jminzg8by15cdndxjhz6ff4r0ghnhzgin3l72g7996v";
+      url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/7b/a9/1df7b7a07a1c224604cab18e27de9820b640e088c75f28cf7f77cfa17a72/check-manifest-0.39.tar.gz";
+      sha256 = "1g2nspfjlbv54n62v5nmwiv5ibygalp6rliblaw3bhd7b3v5bid4";
     };
   };
   "collective.elephantvocabulary" = super.buildPythonPackage {
@@ -1581,6 +1600,21 @@ self: super: {
     src = fetchurl {
       url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/93/67/ab2ed06d2b25fc13b008f0ad384d14365c6956ac9eb8263db88ba6f47630/createcoverage-1.5.tar.gz";
       sha256 = "1wkx0mny1lc21imww161h52kx84nrj5549j3krm14ssplvykhpqz";
+    };
+  };
+  "cryptography" = super.buildPythonPackage {
+    name = "cryptography-2.7";
+    doCheck = false;
+    propagatedBuildInputs = [
+      self."asn1crypto"
+      self."cffi"
+      self."enum34"
+      self."ipaddress"
+      self."six"
+    ];
+    src = fetchurl {
+      url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/c2/95/f43d02315f4ec074219c6e3124a87eba1d2d12196c2767fadfdc07a83884/cryptography-2.7.tar.gz";
+      sha256 = "1inlnr36kl36551c9rcad99jmhk81v33by3glkadwdcgmi17fd76";
     };
   };
   "diazo" = super.buildPythonPackage {
@@ -1821,6 +1855,14 @@ self: super: {
     src = fetchurl {
       url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/bc/a5/b31a91d30f8008f7c8a8e1a56549f291fd0d5f4569ca7be6cc4bb033a83b/initgroups-2.13.0.zip";
       sha256 = "0f0im7cgfg5b6z28h8p1vc5qzq97c2xs1y9dc2xs7hf75sgiqkmk";
+    };
+  };
+  "ipaddress" = super.buildPythonPackage {
+    name = "ipaddress-1.0.22";
+    doCheck = false;
+    src = fetchurl {
+      url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/97/8d/77b8cedcfbf93676148518036c6b1ce7f8e14bf07e95d7fd4ddcb8cc052f/ipaddress-1.0.22.tar.gz";
+      sha256 = "0b570bm6xqpjwqis15pvdy6lyvvzfndjvkynilcddjj5x98wfimi";
     };
   };
   "isort" = super.buildPythonPackage {
@@ -3873,6 +3915,14 @@ self: super: {
       sha256 = "0v4prb05n21bm8650v0a01k1nyqjdmkrsm3zycfxh2j5k9n962p4";
     };
   };
+  "pycparser" = super.buildPythonPackage {
+    name = "pycparser-2.19";
+    doCheck = false;
+    src = fetchurl {
+      url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/68/9e/49196946aee219aead1290e00d1e7fdeab8567783e83e1b9ab5585e6206a/pycparser-2.19.tar.gz";
+      sha256 = "1cr5dcj9628lkz1qlwq3fv97c25363qppkmcayqvd05dpy573259";
+    };
+  };
   "pydocstyle" = super.buildPythonPackage {
     name = "pydocstyle-3.0.0";
     doCheck = false;
@@ -4311,11 +4361,11 @@ self: super: {
     };
   };
   "wrapt" = super.buildPythonPackage {
-    name = "wrapt-1.11.1";
+    name = "wrapt-1.11.2";
     doCheck = false;
     src = fetchurl {
-      url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/67/b2/0f71ca90b0ade7fad27e3d20327c996c6252a2ffe88f50a95bba7434eda9/wrapt-1.11.1.tar.gz";
-      sha256 = "0cqmysny1pz01jw26q48q5zasvns6507rwhgm6wcw743f0r01sja";
+      url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/23/84/323c2415280bc4fc880ac5050dddfb3c8062c2552b34c2e512eb4aa68f79/wrapt-1.11.2.tar.gz";
+      sha256 = "1q81762dgsgrd12f8qc39zk8s5wll3m5xc32jdmlf6cls4gh4njn";
     };
   };
   "z3c.autoinclude" = super.buildPythonPackage {
@@ -5180,6 +5230,19 @@ self: super: {
     src = fetchurl {
       url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/1e/cb/3478d8ce7683d359dfdeedba289d05aec1418940136ed32f4c2b4e368793/zope.i18nmessageid-3.5.3.tar.gz";
       sha256 = "06y7v7nxlsgsm6gk1hqmzw19x78xzx0h4ziyp7cimqwxjr03whkz";
+    };
+  };
+  "zope.index" = super.buildPythonPackage {
+    name = "zope.index-3.6.4";
+    doCheck = false;
+    propagatedBuildInputs = [
+      self."ZODB3"
+      self."setuptools"
+      self."zope.interface"
+    ];
+    src = fetchurl {
+      url = "https://repo.kopla.jyu.fi/api/pypi/pypi/packages/fc/86/884c279aad3b95c61ae50f9df67e8f0e44ab45f6665baf812ff0ffc1300a/zope.index-3.6.4.tar.gz";
+      sha256 = "1ljrqmbzzldaa6myffndrnm6vq6xl6sszqri3ckqrjcxcglqhxz8";
     };
   };
   "zope.interface" = super.buildPythonPackage {

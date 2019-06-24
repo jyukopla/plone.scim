@@ -3,6 +3,8 @@
 # machine repo.kopla.jyu.fi
 # login username
 # password secret
+#
+# either at $(pwd) or as NETRC
 
 INDEX_URL ?= https://repo.kopla.jyu.fi/api/pypi/pypi/simple
 INDEX_HOSTNAME ?= repo.kopla.jyu.fi
@@ -12,28 +14,29 @@ PYTHON ?= python3
 BUILDOUT_CFG ?= test_$(PLONE).cfg
 BUILDOUT_ARGS ?= -N
 PYBOT_ARGS ?=
+NETRC ?= .netrc
 
 .PHONY: all
 all: .installed.cfg
 
 # Cannot be --pure to allow configuring CI build with environment variables
-nix-%: .netrc
-	nix-shell --option netrc-file .netrc setup.nix -A develop \
+nix-%: $(NETRC)
+	nix-shell --option netrc-file $(NETRC) setup.nix -A develop \
 	--argstr plone $(PLONE) --argstr python $(PYTHON) \
 	--run "$(MAKE) $*"
 
 .PHONY: nix-shell
 nix-shell:
-	nix-shell --pure setup.nix -A develop \
+	nix-shell setup.nix -A develop \
 	--argstr plone $(PLONE) --argstr python $(PYTHON)
 
-build: result
+build: env
 
 .PHONY: check
 check: .installed.cfg
 ifeq ($(PYTHON), python3)
 	black -t py27 -t py36 -t py37 --check src
-	pylama src tests
+	pylama src
 endif
 
 .PHONY: clean
@@ -53,6 +56,10 @@ docs: .installed.cfg
 	bin/pocompile src
 	LANGUAGE=fi bin/sphinx-build docs html
 
+env:
+	nix-build --option netrc-file $(NETRC) setup.nix -A env \
+	--argstr plone $(PLONE) --argstr python $(PYTHON) -o env
+
 .PHONY: format
 format: .installed.cfg
 ifeq ($(PYTHON), python3)
@@ -60,14 +67,18 @@ ifeq ($(PYTHON), python3)
 endif
 	bin/isort -rc -y src
 
+.PHONY: serve
+serve: .installed.cfg
+	bin/instance fg
+
 .PHONY: show
 show:
 	buildout -c $(BUILDOUT_CFG) $(BUILDOUT_ARGS) annotate
 
 .PHONY: test
 test: check
-	bin/pocompile
-	bin/test --all
+	bin/pocompile src
+	bin/test  --all
 #	LANGUAGE=fi bin/pybot $(PYBOT_ARGS) -d parts/test docs
 
 .PHONY: watch
@@ -93,20 +104,16 @@ sphinx: .installed.cfg
 	buildout -c $(BUILDOUT_CFG) $(BUILDOUT_ARGS)
 
 .netrc:
-	@echo machine ${INDEX_HOSTNAME} > .netrc
-	@echo login ${PYPI_USERNAME} >> .netrc
-	@echo password ${PYPI_PASSWORD} >> .netrc
+	@echo machine ${INDEX_HOSTNAME} > $(NETRC)
+	@echo login ${PYPI_USERNAME} >> $(NETRC)
+	@echo password ${PYPI_PASSWORD} >> $(NETRC)
 
-netrc: .netrc
-	ln -s .netrc netrc
-
-result:
-	nix-build --option netrc-file .netrc setup.nix -A env \
-	--argstr plone $(PLONE) --argstr python $(PYTHON)
+netrc: $(NETRC)
+	ln -s $(NETRC) netrc
 
 requirements-$(PLONE)-$(PYTHON).txt: BUILDOUT_ARGS=-n buildout:overwrite-requirements-file=true buildout:dump-requirements-file=requirements-$(PLONE)-$(PYTHON).txt
 requirements-$(PLONE)-$(PYTHON).txt: requirements-buildout.nix
-	nix-shell --pure --option netrc-file .netrc \
+	nix-shell --pure --option netrc-file $(NETRC) \
 	setup.nix -A develop \
 	--argstr plone $(PLONE) --argstr python $(PYTHON) \
 	--arg requirements ./requirements-buildout.nix  \
@@ -153,4 +160,4 @@ setup.nix:
 
 .PHONY: upgrade
 upgrade:
-	nix-shell --pure -p curl gnumake jq nix --run "make setup.nix"
+	nix-shell --pure -p cacert curl gnumake jq nix --run "make setup.nix"

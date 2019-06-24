@@ -1,6 +1,6 @@
 { pkgs ? import (fetchTarball {
-    url = "https://github.com/NixOS/nixpkgs-channels/archive/36516712916ebb7475cf3fb5da3a7df6230a60e7.tar.gz";
-    sha256 = "1vaqh7i7qd68wkcj8lzjzrv7s5zzpw1lz30r9jr7wf1y2ssikci5";
+    url = "https://github.com/NixOS/nixpkgs-channels/archive/3ddd23719bbd878c5ddf4ad9597c0e00904245f8.tar.gz";
+    sha256 = "1q8ghjkjnsrwi9v2iwkvaszbvmq1np5yjjrpf1y6gx25lk43ahbn";
   }) {}
 , setup ? import (fetchTarball {
     url = "https://github.com/datakurre/setup.nix/archive/e835238aed6a0058cf3fd0f3d6ae603532db5cb4.tar.gz";
@@ -16,6 +16,21 @@
 let overrides = self: super: {
 
   "plone.recipe.zope2instance" = null;
+
+  "astroid" = if self.isPy27 then super."astroid" else super."astroid".overridePythonAttrs(old: {
+    src = fetchTarball {
+      url = "https://github.com/PyCQA/astroid/archive/981a13962a0d3b2ca359d920dc94530650c15785.tar.gz";
+      sha256 = "05wk2frac6nnnh4a0mys2fyawim430rx0qbkm9wcp2r0pzh2670c";
+    };
+  });
+
+  "cffi" = super."cffi".overridePythonAttrs(old: {
+    propagatedBuildInputs = [ self."pycparser" ];
+  });
+
+  "cryptography" = super."cryptography".overridePythonAttrs(old: {
+    propagatedBuildInputs = [ self."asn1crypto" self."cffi" self."six" ];
+  });
 
   "flake8" = super."flake8".overridePythonAttrs(old: {
     doCheck = false;
