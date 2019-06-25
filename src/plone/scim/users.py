@@ -109,17 +109,19 @@ def users_get_ok(context, request, user, external_id):
 def users_get_multiple_ok(user_tuples):
     """Return response 200 for GET /Users."""
     user_tuples = list(user_tuples)
+
+    def with_external_id(user_, external_id_):
+        if external_id_:
+            user_.update({"externalId": external_id_})
+        return user_
+
     return {
         "schemas": ["urn:ietf:params:scim:api:messages:2.0:ListResponse"],
         "totalResults": len(user_tuples),
         "Resources": [
-            external_id
-            and {
-                "id": user.getId(),
-                "userName": user.getUserName(),
-                "externalId": external_id,
-            }
-            or {"id": user.getId(), "userName": user.getUserName()}
+            with_external_id(
+                {"id": user.getId(), "userName": user.getUserName()}, external_id
+            )
             for user, external_id in user_tuples
         ],
     }

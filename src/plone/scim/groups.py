@@ -101,13 +101,9 @@ def groups_get_ok(context, request, group, members, external_id):
     return response
 
 
-def groups_get_multiple_ok(context, groups):
+def groups_get_multiple_ok(groups):
     """Return response 200 for GET /Groups."""
     groups = list(groups)
-    site_url = context.absolute_url()
-    base_url = "{site_url:s}/{BASE_PATH:s}".format(
-        site_url=site_url, BASE_PATH=BASE_PATH
-    )
 
     def with_external_id(group, external_id):
         if external_id:
@@ -119,29 +115,7 @@ def groups_get_multiple_ok(context, groups):
         "totalResults": len(groups),
         "Resources": [
             with_external_id(
-                {
-                    "id": group["id"],
-                    "displayName": group["title"],
-                    "members": [
-                        isinstance(member, dict)
-                        and {
-                            "value": member["id"],
-                            "$ref": "{base_url:s}/v2/Groups/{group_id:s}".format(
-                                base_url=base_url, group_id=member["id"]
-                            ),
-                            "displayName": member["title"],
-                        }
-                        or {
-                            "value": member.getId(),
-                            "$ref": "{base_url:s}/v2/Users/{user_id:s}".format(
-                                base_url=base_url, user_id=member.getId()
-                            ),
-                            "displayName": member.getProperty("fullname"),
-                        }
-                        for member in members
-                    ],
-                },
-                external_id,
+                {"id": group["id"], "displayName": group["title"]}, external_id
             )
             for group, members, external_id in groups
         ],
@@ -172,13 +146,16 @@ def get_group_tuples(source_groups, group_id=None, external_id=None):
             yield source_groups._groups[group_id], external_id
 
 
-def filter_groups(context, query):
+def filter_groups(context, query, include_members=True):
     """Return list of member objects from source_groups matching query."""
     groups = get_source_groups(context)
     query = {"group_id": query.get("group_id"), "external_id": query.get("external_id")}
     results = get_group_tuples(groups, **query)
     for group, external_id in results:
-        members = get_members(context, group["id"])
+        if include_members:
+            members = get_members(context, group["id"])
+        else:
+            members = ()
         yield group, members, external_id
 
 
@@ -261,7 +238,7 @@ class GroupsGet(ScimView):
             return groups_get_bad_request_no_filter()
 
         return groups_get_multiple_ok(
-            self.context, filter_groups(self.context, parsed_query)
+            filter_groups(self.context, parsed_query, include_members=False)
         )
 
 
