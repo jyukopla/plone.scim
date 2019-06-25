@@ -106,14 +106,21 @@ def users_get_ok(context, request, user, external_id):
     return response
 
 
-def users_get_multiple_ok(users):
+def users_get_multiple_ok(user_tuples):
     """Return response 200 for GET /Users."""
-    users = list(users)
+    user_tuples = list(user_tuples)
     return {
         "schemas": ["urn:ietf:params:scim:api:messages:2.0:ListResponse"],
-        "totalResults": len(users),
+        "totalResults": len(user_tuples),
         "Resources": [
-            {"id": user.getId(), "userName": user.getUserName()} for user in users
+            external_id
+            and {
+                "id": user.getId(),
+                "userName": user.getUserName(),
+                "externalId": external_id,
+            }
+            or {"id": user.getId(), "userName": user.getUserName()}
+            for user, external_id in user_tuples
         ],
     }
 
@@ -146,8 +153,8 @@ def filter_users(context, query):
     users = get_source_users(context)
     results = get_user_id_tuples(users, **query)
     portal_membership = getToolByName(context, "portal_membership")
-    for user_id, external_id in results:  # noqa: external_id not used
-        yield portal_membership.getMemberById(user_id)
+    for user_id, external_id in results:
+        yield portal_membership.getMemberById(user_id), external_id
 
 
 def get_user(context, login):

@@ -108,32 +108,41 @@ def groups_get_multiple_ok(context, groups):
     base_url = "{site_url:s}/{BASE_PATH:s}".format(
         site_url=site_url, BASE_PATH=BASE_PATH
     )
+
+    def with_external_id(group, external_id):
+        if external_id:
+            group.update({"externalId": external_id})
+        return group
+
     return {
         "schemas": ["urn:ietf:params:scim:api:messages:2.0:ListResponse"],
         "totalResults": len(groups),
         "Resources": [
-            {
-                "id": group["id"],
-                "displayName": group["title"],
-                "members": [
-                    isinstance(member, dict)
-                    and {
-                        "value": member["id"],
-                        "$ref": "{base_url:s}/v2/Groups/{group_id:s}".format(
-                            base_url=base_url, group_id=member["id"]
-                        ),
-                        "displayName": member["title"],
-                    }
-                    or {
-                        "value": member.getId(),
-                        "$ref": "{base_url:s}/v2/Users/{user_id:s}".format(
-                            base_url=base_url, user_id=member.getId()
-                        ),
-                        "displayName": member.getProperty("fullname"),
-                    }
-                    for member in members
-                ],
-            }
+            with_external_id(
+                {
+                    "id": group["id"],
+                    "displayName": group["title"],
+                    "members": [
+                        isinstance(member, dict)
+                        and {
+                            "value": member["id"],
+                            "$ref": "{base_url:s}/v2/Groups/{group_id:s}".format(
+                                base_url=base_url, group_id=member["id"]
+                            ),
+                            "displayName": member["title"],
+                        }
+                        or {
+                            "value": member.getId(),
+                            "$ref": "{base_url:s}/v2/Users/{user_id:s}".format(
+                                base_url=base_url, user_id=member.getId()
+                            ),
+                            "displayName": member.getProperty("fullname"),
+                        }
+                        for member in members
+                    ],
+                },
+                external_id,
+            )
             for group, members, external_id in groups
         ],
     }
