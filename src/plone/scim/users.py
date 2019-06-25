@@ -274,7 +274,7 @@ class CreateUser(ScimView):
 
         # Update user
         user = portal_membership.getMemberById(login)
-        user.setProperties({"fullname": fullname, "email": email})
+        user.setMemberProperties({"fullname": fullname, "email": email})
 
         self.status_code = 201
         return users_get_ok(self.context, self.request, user, external_id)
