@@ -9,9 +9,12 @@ from zExceptions import BadRequest
 from zope.component import queryUtility
 from zope.security.interfaces import IPermission
 import json
+import logging
 import os
 import string
 import struct
+
+logger = logging.getLogger('plone.scim')
 
 
 try:
@@ -71,6 +74,11 @@ def validate_scim_request(request):
             offset = len("Request")
             detail = "Request" + detail[offset:]
         raise BadRequest(detail)
+    except TypeError as e:
+        logger.exception("Unexpected exception for:\n{json:s}".format(
+            json=json.dumps(data, indent=2),
+        ))
+        raise BadRequest(str(e))
 
 
 def validate_scim_data(data):
