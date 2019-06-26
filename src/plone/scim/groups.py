@@ -201,6 +201,8 @@ def delete_group(context, group_id):
         external_id = source_groups._groupid_to_externalid.get(group_id)
         if external_id:
             delete_external_id(source_groups, group_id, external_id)
+        mutable_properties = acl_users["mutable_properties"]
+        mutable_properties.deleteUser(group_id)
 
 
 @implementer(IPublishTraverse)
@@ -290,6 +292,9 @@ class CreateGroup(ScimView):
         except KeyError:
             pass
         groups.addGroup(group_id, title=display_name)
+        portal_groups = getToolByName(self.context, "portal_groups")
+        group = portal_groups.getGroupById(group_id)
+        portal_groups.editGroup(group_id, title=display_name)
 
         for member in members:
             groups.addPrincipalToGroup(member["value"], group_id)
@@ -358,6 +363,9 @@ class GroupsPut(ScimView):
         # Update group
         groups = get_source_groups(self.context)
         groups.updateGroup(group_id, title=display_name)
+        portal_groups = getToolByName(self.context, "portal_groups")
+        group = portal_groups.getGroupById(group_id)
+        portal_groups.editGroup(group_id, title=display_name)
 
         added_members = [member["value"] for member in added_members]
         for principal, title in members:
