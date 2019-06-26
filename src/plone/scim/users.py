@@ -272,9 +272,18 @@ class CreateUser(ScimView):
 
         # Create user
         portal_membership = getToolByName(self.context, "portal_membership")
-        if portal_membership.getMemberById(login):
+        users = get_source_users(self.context)
+        if login in users._login_to_userid:
             self.status_code = 400
             return users_post_user_name_not_unique(login)
+
+        # TODO: We may want to support global uniqueness checking later,
+        # but now we want to allow overlapping accounts with LDAP
+
+        # if portal_membership.getMemberById(login):
+        #     self.status_code = 400
+        #     return users_post_user_name_not_unique(login)
+
         users = IUserAdderPlugin(get_source_users(self.context))
         users.doAddUser(login, generate_password(256))
         if external_id:
