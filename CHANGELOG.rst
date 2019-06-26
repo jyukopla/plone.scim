@@ -5,8 +5,10 @@ Changelog
 0.2.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
-
+- Add to properly set and delete title of SCIM managed group
+  [Asko Soukka]
+- Enhance error messages for unexpected validation errors
+  [Asko Soukka]
 
 0.2.0 (2019-06-26)
 ------------------
