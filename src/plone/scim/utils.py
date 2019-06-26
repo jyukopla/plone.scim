@@ -14,7 +14,8 @@ import os
 import string
 import struct
 
-logger = logging.getLogger('plone.scim')
+
+logger = logging.getLogger("plone.scim")
 
 
 try:
@@ -75,9 +76,11 @@ def validate_scim_request(request):
             detail = "Request" + detail[offset:]
         raise BadRequest(detail)
     except TypeError as e:
-        logger.exception("Unexpected exception for:\n{json:s}".format(
-            json=json.dumps(data, indent=2),
-        ))
+        logger.exception(
+            "Unexpected exception for:\n{json:s}".format(
+                json=json.dumps(data, indent=2)
+            )
+        )
         raise BadRequest(str(e))
 
 

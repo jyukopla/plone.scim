@@ -48,9 +48,10 @@ let overrides = self: super: {
 #   propagatedBuildInputs = [ self."pylint" ];
 # });
 
-# "robotframework" = super."robotframework".overridePythonAttrs(old: {
-#   nativeBuildInputs = [ pkgs."unzip" ];
-# });
+  "robotframework" = super."robotframework".overridePythonAttrs(old: {
+    buildInputs = [ pkgs."unzip" ];
+    nativeBuildInputs = [ pkgs."unzip" ];
+  });
 
   # TODO: add to setup.nix default overrides
   "lazy-object-proxy" = super."lazy-object-proxy".overridePythonAttrs(old: {
