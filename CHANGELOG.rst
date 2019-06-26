@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-0.2.1 (unreleased)
+0.3.0 (2019-06-26)
 ------------------
 
 - Add to properly set and delete title of SCIM managed group
