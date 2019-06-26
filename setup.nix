@@ -28,6 +28,10 @@ let overrides = self: super: {
     propagatedBuildInputs = [ self."pycparser" ];
   });
 
+  "persistent" = super."persistent".overridePythonAttrs(old: {
+    propagatedBuildInputs = [ self."cffi" ];
+  });
+
   "cryptography" = super."cryptography".overridePythonAttrs(old: {
     propagatedBuildInputs = [ self."asn1crypto" self."cffi" self."six" ];
   });
