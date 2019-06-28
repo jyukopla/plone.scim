@@ -291,13 +291,13 @@ class CreateGroup(ScimView):
                 return groups_post_group_id_not_unique(group_id)
         except KeyError:
             pass
-        groups.addGroup(group_id, title=display_name)
+        groups.addGroup(str(group_id), title=display_name)
         portal_groups = getToolByName(self.context, "portal_groups")
         group = portal_groups.getGroupById(group_id)
         portal_groups.editGroup(group_id, title=display_name)
 
         for member in members:
-            groups.addPrincipalToGroup(member["value"], group_id)
+            groups.addPrincipalToGroup(str(member["value"]), group_id)
 
         if external_id:
             set_external_id(groups, group_id, external_id)
@@ -310,8 +310,8 @@ class CreateGroup(ScimView):
 # noinspection PyProtectedMember
 def set_external_id(source_groups, group_id, external_id):
     """Set source_groups external id for given group_id."""
-    source_groups._externalid_to_groupid[external_id] = group_id
-    source_groups._groupid_to_externalid[group_id] = external_id
+    source_groups._externalid_to_groupid[str(external_id)] = str(group_id)
+    source_groups._groupid_to_externalid[str(group_id)] = str(external_id)
 
 
 # noinspection PyProtectedMember
@@ -374,10 +374,10 @@ class GroupsPut(ScimView):
             if principal not in added_members:
                 groups.removePrincipalFromGroup(principal, group_id)
         for principal in added_members:
-            groups.addPrincipalToGroup(principal, group_id)
+            groups.addPrincipalToGroup(str(principal), group_id)
 
         if external_id:
-            set_external_id(groups, group_id, external_id)
+            set_external_id(groups, str(group_id), str(external_id))
 
         group, members, external_id = get_group(self.context, group_id)
         return groups_get_ok(self.context, self.request, group, members, external_id)

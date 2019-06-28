@@ -285,10 +285,10 @@ class CreateUser(ScimView):
         #     return users_post_user_name_not_unique(login)
 
         users = IUserAdderPlugin(get_source_users(self.context))
-        users.doAddUser(login, generate_password(256))
+        users.doAddUser(str(login), generate_password(256))
         if external_id:
-            users._externalid_to_login[external_id] = login
-            users._login_to_externalid[login] = external_id
+            users._externalid_to_login[str(external_id)] = str(login)
+            users._login_to_externalid[str(login)] = str(external_id)
 
         # Update user
         user = portal_membership.getMemberById(login)
@@ -346,8 +346,8 @@ class UsersPut(ScimView):
         if not external_id:
             external_id = data.get("externalId")
             if external_id:
-                users._externalid_to_login[external_id] = self.login  # noqa
-                users._login_to_externalid[self.login] = external_id  # noqa
+                users._externalid_to_login[str(external_id)] = str(self.login)  # noqa
+                users._login_to_externalid[str(self.login)] = str(external_id)  # noqa
         external_id = get_external_id(data)
         fullname = get_fullname(data)
         email = get_email(data)
