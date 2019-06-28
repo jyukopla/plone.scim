@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-0.3.1 (unreleased)
+0.3.1 (2019-06-28)
 ------------------
 
 - Fix issue where login, userid and group id were stored as unicode on Python 2
