@@ -5,7 +5,8 @@ Changelog
 0.3.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix issue where login, userid and group id were stored as unicode on Python 2
+  [Asko Soukka]
 
 
 0.3.0 (2019-06-26)
