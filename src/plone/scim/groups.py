@@ -246,7 +246,7 @@ class GroupsGet(ScimView):
 
 def get_group_id(data):
     """Return group_id name from SCIM Group."""
-    return data["id"] or data.get("externalId")
+    return data.get("id") or data.get("externalId")
 
 
 def get_external_id(data):
