@@ -5,7 +5,8 @@ Changelog
 0.3.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix where creation of group failed when no id was given
+  [Asko Soukka]
 
 
 0.3.1 (2019-06-28)
