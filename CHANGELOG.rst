@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-0.3.2 (unreleased)
+0.3.2 (2019-09-23)
 ------------------
 
 - Fix where creation of group failed when no id was given
