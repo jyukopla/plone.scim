@@ -89,7 +89,7 @@ requirements-$(PLONE)-$(PYTHON).nix: requirements-$(PLONE)-$(PYTHON).txt
 
 requirements-$(PLONE)-$(PYTHON).txt: $(BUILDOUT_CFG) setup.cfg
 	$(RM) .installed.cfg
-	nix-shell $(NIX_OPTIONS) --run "buildout -c $(BUILDOUT_CFG) $(BUILDOUT_ARGS)"
+	nix-shell $(NIX_OPTIONS) --run "buildout -c $(BUILDOUT_CFG) $(BUILDOUT_ARGS) buildout:extensions=buildout.requirements"
 	HOME=$(PWD) NIX_CONF_DIR=$(PWD) \
 	nix-shell setup.nix $(NIX_OPTIONS) -A pip2nix --run "HOME=$(PWD) NIX_CONF_DIR=$(PWD) pip2nix generate -r requirements.txt --index-url $(INDEX_URL) --output=requirements-$(PLONE)-$(PYTHON).nix"
 	@grep "pname =\|version =" requirements-$(PLONE)-$(PYTHON).nix|awk "ORS=NR%2?FS:RS"|sed 's|.*"\(.*\)";.*version = "\(.*\)".*|\1==\2|' > requirements-$(PLONE)-$(PYTHON).txt
