@@ -22,7 +22,7 @@ def bad_request(detail="Bad Request."):
 
 
 def unauthorized(
-    detail="Authorization failure. The authorization header is invalid or missing."
+    detail="Authorization failure. The authorization header is invalid or missing.",
 ):
     """Return response 401."""
     return {
