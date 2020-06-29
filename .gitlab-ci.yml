@@ -8,13 +8,13 @@ test-plone-4.3-py2:
   script:
   - BUILDOUT_CFG=test_plone43.cfg
     PLONE=plone43
-    PYTHON=python2
+    PYTHON=python27
     make nix-show
   - BUILDOUT_CFG=test_plone43.cfg
     BUILDOUT_ARGS="-N install pylama pocompile test"
     LC_ALL=C
     PLONE=plone43
-    PYTHON=python2
+    PYTHON=python27
     ROBOT_BROWSER=headlessfirefox
     make nix-test
   artifacts:
@@ -28,13 +28,13 @@ test-plone-5.2-py2:
   script:
   - BUILDOUT_CFG=test_plone52.cfg
     PLONE=plone52
-    PYTHON=python2
+    PYTHON=python27
     make nix-show
   - BUILDOUT_CFG=test_plone52.cfg
     BUILDOUT_ARGS="-N install pylama pocompile test"
     LC_ALL=C
     PLONE=plone52
-    PYTHON=python2
+    PYTHON=python27
     ROBOT_BROWSER=headlessfirefox
     make nix-test
   artifacts:
@@ -48,13 +48,13 @@ test-plone-5.2-py3:
   script:
   - BUILDOUT_CFG=test_plone52.cfg
     PLONE=plone52
-    PYTHON=python3
+    PYTHON=python37
     make nix-show
   - BUILDOUT_CFG=test_plone52.cfg
     BUILDOUT_ARGS="-N install black pylama pocompile test"
     LC_ALL=C
     PLONE=plone52
-    PYTHON=python3
+    PYTHON=python37
     ROBOT_BROWSER=headlessfirefox
     make nix-test
   artifacts:
