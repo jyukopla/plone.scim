@@ -15,7 +15,7 @@ PYTHON ?= python37
 BUILDOUT_CFG ?= test_$(PLONE).cfg
 BUILDOUT_ARGS ?= -N
 
-NIX_OPTIONS ?= --argstr plone $(PLONE) --argstr python $(PYTHON)  --option netrc-file .netrc
+NIX_OPTIONS ?= --argstr plone $(PLONE) --argstr python $(PYTHON) --option netrc-file .netrc
 REF_NIXPKGS = branches nixos-20.03
 
 .PHONY: check
