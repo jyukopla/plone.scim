@@ -37,8 +37,8 @@ endif
 
 .PHONY: shell
 shell:
-	NIX_CONF_DIR=$(PWD) \
-	nix-shell $(NIX_OPTIONS) setup.nix -A shell
+	nix develop github:datakurre/pkgs#plone-python39
+
 
 .PHONY: show
 show:
