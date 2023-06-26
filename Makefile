@@ -37,7 +37,7 @@ endif
 
 .PHONY: shell
 shell:
-	nix develop github:datakurre/pkgs#plone-python39
+	nix develop github:datakurre/pkgs#plone-python39 --refresh
 
 
 .PHONY: show
