@@ -18,6 +18,7 @@
       "name": "members",
       "type": "complex",
       "multiValued": true,
+      "caseExact": true,
       "description": "A list of members of the Group.",
       "required": false,
       "subAttributes": [
