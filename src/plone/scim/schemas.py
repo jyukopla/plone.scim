@@ -50,6 +50,7 @@ class UserSchema(ScimView):
         schema = deepcopy(USER_SCHEMA)
         schema.update(
             {
+                "schemas": ["urn:ietf:params:scim:schemas:core:2.0:Schema"],
                 "meta": {
                     "resourceType": "Schema",
                     "location": "{base_url:s}:User".format(base_url=base_url),
@@ -74,6 +75,7 @@ class GroupSchema(ScimView):
         schema = deepcopy(GROUP_SCHEMA)
         schema.update(
             {
+                "schemas": ["urn:ietf:params:scim:schemas:core:2.0:Schema"],
                 "meta": {
                     "resourceType": "Schema",
                     "location": "{base_url:s}:Group".format(base_url=base_url),
@@ -98,6 +100,7 @@ class ServiceProviderConfigSchema(ScimView):
         schema = deepcopy(SERVICE_PROVIDER_CONFIG_SCHEMA)
         schema.update(
             {
+                "schemas": ["urn:ietf:params:scim:schemas:core:2.0:Schema"],
                 "meta": {
                     "resourceType": "Schema",
                     "location": "{base_url:s}:ServiceProviderConfig".format(
@@ -124,6 +127,7 @@ class ResourceTypeSchema(ScimView):
         schema = deepcopy(RESOURCE_TYPE_SCHEMA)
         schema.update(
             {
+                "schemas": ["urn:ietf:params:scim:schemas:core:2.0:Schema"],
                 "meta": {
                     "resourceType": "Schema",
                     "location": "{base_url:s}:ResourceType".format(base_url=base_url),
@@ -148,6 +152,7 @@ class SchemaSchema(ScimView):
         schema = deepcopy(SCHEMA_SCHEMA)
         schema.update(
             {
+                "schemas": ["urn:ietf:params:scim:schemas:core:2.0:Schema"],
                 "meta": {
                     "resourceType": "Schema",
                     "location": "{base_url:s}:Schema".format(base_url=base_url),
@@ -164,6 +169,12 @@ class Schemas(ScimView):
 
     def render(self, schema_view_classes=()):  # noqa: Parameters differ from overridden
         """Implement /Schemas endpoint."""
+
+        # remove non-User and non-Group schemas
+        # because at least the compliance utility breaks down
+        # if there is no matching resource types.
+        schema_view_classes = schema_view_classes[:2]
+
         return {
             "totalResults": 5,
             "schemas": ["urn:ietf:params:scim:api:messages:2.0:ListResponse"],
