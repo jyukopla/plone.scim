@@ -6,16 +6,7 @@
   <plone:service
       name="@scim"
       method="GET"
-      accept="application/json"
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-      factory=".protocol.Get"
-      permission="zope2.View"
-      />
-
-  <plone:service
-      name="@scim"
-      method="GET"
-      accept="application/scim+json"
+      accept="*/*"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       factory=".protocol.Get"
       permission="zope2.View"
@@ -24,16 +15,7 @@
   <plone:service
       name="@scim"
       method="POST"
-      accept="application/json"
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-      factory=".protocol.Post"
-      permission="zope2.View"
-      />
-
-  <plone:service
-      name="@scim"
-      method="POST"
-      accept="application/scim+json"
+      accept="*/*"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       factory=".protocol.Post"
       permission="zope2.View"
@@ -42,16 +24,7 @@
   <plone:service
       name="@scim"
       method="PUT"
-      accept="application/json"
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-      factory=".protocol.Put"
-      permission="zope2.View"
-      />
-
-  <plone:service
-      name="@scim"
-      method="PUT"
-      accept="application/scim+json"
+      accept="*/*"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       factory=".protocol.Put"
       permission="zope2.View"
@@ -60,16 +33,7 @@
   <plone:service
       name="@scim"
       method="DELETE"
-      accept="application/json"
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-      factory=".protocol.Delete"
-      permission="zope2.View"
-      />
-
-  <plone:service
-      name="@scim"
-      method="DELETE"
-      accept="application/scim+json"
+      accept="*/*"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       factory=".protocol.Delete"
       permission="zope2.View"
