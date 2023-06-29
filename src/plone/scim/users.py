@@ -157,7 +157,7 @@ def filter_users(context, query, startIndex, count):
 
     # get users by filter
     if query:
-        results = get_user_id_tuples(users, **query)
+        results = list(get_user_id_tuples(users, **query))
     else:
         results = []
         for login, user_id in users._login_to_userid.items():

@@ -154,7 +154,7 @@ def filter_groups(context, query, startIndex, count, include_members=True):
     # get groups by filter
     if query:
         query = {"group_id": query.get("group_id"), "external_id": query.get("external_id")}
-        results = get_group_tuples(groups, **query)
+        results = list(get_group_tuples(groups, **query))
     else:
         results = []
         for group_id, group in groups._groups.items():
