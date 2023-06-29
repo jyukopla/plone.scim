@@ -140,6 +140,7 @@ class Get(Service):
         )
 
     def render(self):
+
         if self.permission and not check_permission(self.permission, self.context):
             portal_membership = getToolByName(self.context, "portal_membership")
             if portal_membership.isAnonymousUser():

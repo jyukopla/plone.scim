@@ -12,6 +12,11 @@ from zExceptions import NotFound
 from zope.interface import alsoProvides
 from zope.interface import implementer
 from zope.publisher.interfaces import IPublishTraverse
+import json
+import logging
+
+
+logger = logging.getLogger("plone.scim")
 
 
 # pylama:ignore=W0212,R1704
@@ -290,6 +295,16 @@ class CreateUser(ScimView):
 
     # noinspection PyProtectedMember,PyArgumentList
     def render(self):
+
+        headers = self.request.environ
+        body = json.loads(self.request['BODY'])
+        logger.info("###")
+        logger.info("Headers")
+        logger.info(headers)
+        logger.info("###")
+        logger.info("Body")
+        logger.info(body)
+
         data = validate_scim_request(self.request)
         if HAS_CSRF_PROTECTION:
             alsoProvides(self.request, IDisableCSRFProtection)
