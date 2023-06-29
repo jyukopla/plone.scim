@@ -166,7 +166,7 @@ def filter_users(context, query, start_index, count):
 
     # paginate!
     if count:
-        results = results[start_index:start_index+count]
+        results = results[start_index : start_index + count]
 
     portal_membership = getToolByName(context, "portal_membership")
     for user_id, external_id in results:
@@ -253,7 +253,6 @@ class UsersGet(ScimView):
         return users_get_multiple_ok(
             filter_users(self.context, parsed_query, start_index, count)
         )
-
 
 
 def get_login(data):

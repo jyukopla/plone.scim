@@ -153,7 +153,10 @@ def filter_groups(context, query, start_index, count, include_members=True):
 
     # get groups by filter
     if query:
-        query = {"group_id": query.get("group_id"), "external_id": query.get("external_id")}
+        query = {
+            "group_id": query.get("group_id"),
+            "external_id": query.get("external_id"),
+        }
         results = list(get_group_tuples(groups, **query))
     else:
         results = []
@@ -163,7 +166,7 @@ def filter_groups(context, query, start_index, count, include_members=True):
 
     # paginate!
     if count:
-        results = results[start_index:start_index+count]
+        results = results[start_index : start_index + count]
 
     portal_membership = getToolByName(context, "portal_membership")
     for group, external_id in results:
@@ -272,7 +275,9 @@ class GroupsGet(ScimView):
             count = None
 
         return groups_get_multiple_ok(
-            filter_groups(self.context, parsed_query, start_index, count, include_members=False)
+            filter_groups(
+                self.context, parsed_query, start_index, count, include_members=False
+            )
         )
 
 

@@ -35,8 +35,8 @@ class TestSetup(unittest.TestCase):
 
     def test_browserlayer(self):
         """Test that IPloneScimLayer is registered."""
-        from plone.scim.interfaces import IPloneScimLayer
         from plone.browserlayer import utils
+        from plone.scim.interfaces import IPloneScimLayer
 
         self.assertIn(IPloneScimLayer, utils.registered_layers())
 
@@ -63,7 +63,7 @@ class TestUninstall(unittest.TestCase):
 
     def test_browserlayer_removed(self):
         """Test that IPloneScimLayer is removed."""
-        from plone.scim.interfaces import IPloneScimLayer
         from plone.browserlayer import utils
+        from plone.scim.interfaces import IPloneScimLayer
 
         self.assertNotIn(IPloneScimLayer, utils.registered_layers())

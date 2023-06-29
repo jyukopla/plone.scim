@@ -20,20 +20,16 @@ REF_NIXPKGS = branches nixos-20.03
 
 .PHONY: check
 check: .installed.cfg
-ifeq ($(PYTHON), python37)
-	bin/black -t py27 --check src
+	bin/black --check src
 	# pylama src
-endif
 
 env:
 	nix-build $(NIX_OPTIONS) setup.nix -A env -o env
 
 .PHONY: format
 format: .installed.cfg
-ifeq ($(PYTHON), python37)
-	bin/black -t py27 src
-endif
-	bin/isort -rc -y src
+	bin/black src
+	bin/isort -rc src
 
 .PHONY: shell
 shell:

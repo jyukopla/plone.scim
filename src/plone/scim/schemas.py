@@ -54,7 +54,7 @@ class UserSchema(ScimView):
                 "meta": {
                     "resourceType": "Schema",
                     "location": "{base_url:s}:User".format(base_url=base_url),
-                }
+                },
             }
         )
         return schema
@@ -79,7 +79,7 @@ class GroupSchema(ScimView):
                 "meta": {
                     "resourceType": "Schema",
                     "location": "{base_url:s}:Group".format(base_url=base_url),
-                }
+                },
             }
         )
         return schema
@@ -106,7 +106,7 @@ class ServiceProviderConfigSchema(ScimView):
                     "location": "{base_url:s}:ServiceProviderConfig".format(
                         base_url=base_url
                     ),
-                }
+                },
             }
         )
         return schema
@@ -131,7 +131,7 @@ class ResourceTypeSchema(ScimView):
                 "meta": {
                     "resourceType": "Schema",
                     "location": "{base_url:s}:ResourceType".format(base_url=base_url),
-                }
+                },
             }
         )
         return schema
@@ -156,7 +156,7 @@ class SchemaSchema(ScimView):
                 "meta": {
                     "resourceType": "Schema",
                     "location": "{base_url:s}:Schema".format(base_url=base_url),
-                }
+                },
             }
         )
         return schema
@@ -173,10 +173,11 @@ class Schemas(ScimView):
         # remove non-User and non-Group schemas
         # because at least the compliance utility breaks down
         # if there are no matching resource types.
-        schema_view_classes = (
-            [kls for kls in schema_view_classes if
-             kls.__name__ in ["UserSchema", "GroupSchema"]]
-        )
+        schema_view_classes = [
+            kls
+            for kls in schema_view_classes
+            if kls.__name__ in ["UserSchema", "GroupSchema"]
+        ]
 
         return {
             "totalResults": 5,
