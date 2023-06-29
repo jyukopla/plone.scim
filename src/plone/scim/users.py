@@ -46,7 +46,7 @@ def users_get_not_found(name):
     }
 
 
-def users_get_bad_request_no_filter():
+def users_get_bad_request():
     """Return response 400 for GET /Users."""
     return {
         "schemas": ["urn:ietf:params:scim:api:messages:2.0:Error"],
@@ -150,10 +150,24 @@ def get_user_id_tuples(source_users, login=None, external_id=None, **kwargs):
             yield source_users._login_to_userid[login], external_id
 
 
-def filter_users(context, query):
+def filter_users(context, query, startIndex, count):
     """Return list of member objects from source_users matching query."""
+
     users = get_source_users(context)
-    results = get_user_id_tuples(users, **query)
+
+    # get users by filter
+    if query:
+        results = get_user_id_tuples(users, **query)
+    else:
+        results = []
+        for login, user_id in users._login_to_userid.items():
+            external_id = users._login_to_externalid.get(login)
+            results.append((user_id, external_id))
+
+    # paginate!
+    if count:
+        results = results[startIndex:startIndex+count]
+
     portal_membership = getToolByName(context, "portal_membership")
     for user_id, external_id in results:
         yield portal_membership.getMemberById(user_id), external_id
@@ -211,18 +225,35 @@ class UsersGet(ScimView):
                 return users_get_not_found(self.login)
             return users_get_ok(self.context, self.request, user, external_id)
 
-        # Filtered list of users
+        # Possibly parse the filter query string
         query = self.request.form.get("filter") or ""
-        if not query:
-            self.status_code = 400
-            return users_get_bad_request_no_filter()
-        try:
-            parsed_query = from_filter(query)
-        except FilterParserException:
-            self.status_code = 400
-            return users_get_bad_request_no_filter()
+        if query:
+            try:
+                parsed_query = from_filter(query)
+            except FilterParserException:
+                self.status_code = 400
+                return users_get_bad_request()
+        else:
+            parsed_query = {}
 
-        return users_get_multiple_ok(filter_users(self.context, parsed_query))
+        # Possibly parse startIndex (1-based)
+        try:
+            startIndex = int(self.request.form.get("startIndex"))
+            if startIndex > 0:
+                startIndex = startIndex - 1
+        except ValueError:
+            startIndex = 0
+
+        # Possibly parse count
+        try:
+            count = int(self.request.form.get("count")) or None
+        except ValueError:
+            count = None
+
+        return users_get_multiple_ok(
+            filter_users(self.context, parsed_query, startIndex, count)
+        )
+
 
 
 def get_login(data):
