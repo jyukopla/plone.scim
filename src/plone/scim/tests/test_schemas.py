@@ -22,7 +22,9 @@ class TestSchemas(unittest.TestCase):
 
         data = response.json()
         self.assertIn("Resources", data)
-        self.assertEqual(data["totalResults"], len(data["Resources"]))
+
+        self.assertEqual(len(data["Resources"]), 2)
+        self.assertEqual(data["totalResults"], 5)
 
         for resource in data["Resources"]:
             self.assertIn("meta", resource)

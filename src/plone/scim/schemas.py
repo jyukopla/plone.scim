@@ -172,8 +172,11 @@ class Schemas(ScimView):
 
         # remove non-User and non-Group schemas
         # because at least the compliance utility breaks down
-        # if there is no matching resource types.
-        schema_view_classes = schema_view_classes[:2]
+        # if there are no matching resource types.
+        schema_view_classes = (
+            [kls for kls in schema_view_classes if
+             kls.__name__ in ["UserSchema", "GroupSchema"]]
+        )
 
         return {
             "totalResults": 5,

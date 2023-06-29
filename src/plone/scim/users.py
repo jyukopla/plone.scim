@@ -150,7 +150,7 @@ def get_user_id_tuples(source_users, login=None, external_id=None, **kwargs):
             yield source_users._login_to_userid[login], external_id
 
 
-def filter_users(context, query, startIndex, count):
+def filter_users(context, query, start_index, count):
     """Return list of member objects from source_users matching query."""
 
     users = get_source_users(context)
@@ -166,7 +166,7 @@ def filter_users(context, query, startIndex, count):
 
     # paginate!
     if count:
-        results = results[startIndex:startIndex+count]
+        results = results[start_index:start_index+count]
 
     portal_membership = getToolByName(context, "portal_membership")
     for user_id, external_id in results:
@@ -236,22 +236,22 @@ class UsersGet(ScimView):
         else:
             parsed_query = {}
 
-        # Possibly parse startIndex (1-based)
+        # Possibly parse start_index (1-based)
         try:
-            startIndex = int(self.request.form.get("startIndex"))
-            if startIndex > 0:
-                startIndex = startIndex - 1
-        except ValueError:
-            startIndex = 0
+            start_index = int(self.request.form.get("startIndex"))
+            if start_index > 0:
+                start_index = start_index - 1
+        except (ValueError, TypeError):
+            start_index = 0
 
         # Possibly parse count
         try:
             count = int(self.request.form.get("count")) or None
-        except ValueError:
+        except (ValueError, TypeError):
             count = None
 
         return users_get_multiple_ok(
-            filter_users(self.context, parsed_query, startIndex, count)
+            filter_users(self.context, parsed_query, start_index, count)
         )
 
 

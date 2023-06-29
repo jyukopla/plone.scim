@@ -146,7 +146,7 @@ def get_group_tuples(source_groups, group_id=None, external_id=None):
             yield source_groups._groups[group_id], external_id
 
 
-def filter_groups(context, query, startIndex, count, include_members=True):
+def filter_groups(context, query, start_index, count, include_members=True):
     """Return list of member objects from source_groups matching query."""
 
     groups = get_source_groups(context)
@@ -163,7 +163,7 @@ def filter_groups(context, query, startIndex, count, include_members=True):
 
     # paginate!
     if count:
-        results = results[startIndex:startIndex+count]
+        results = results[start_index:start_index+count]
 
     portal_membership = getToolByName(context, "portal_membership")
     for group, external_id in results:
@@ -257,22 +257,22 @@ class GroupsGet(ScimView):
         else:
             parsed_query = {}
 
-        # Possibly parse startIndex (1-based)
+        # Possibly parse start_index (1-based)
         try:
-            startIndex = int(self.request.form.get("startIndex"))
-            if startIndex > 0:
-                startIndex = startIndex - 1
-        except ValueError:
-            startIndex = 0
+            start_index = int(self.request.form.get("startIndex"))
+            if start_index > 0:
+                start_index = start_index - 1
+        except (ValueError, TypeError):
+            start_index = 0
 
         # Possibly parse count
         try:
             count = int(self.request.form.get("count")) or None
-        except ValueError:
+        except (ValueError, TypeError):
             count = None
 
         return groups_get_multiple_ok(
-            filter_groups(self.context, parsed_query, startIndex, count, include_members=False)
+            filter_groups(self.context, parsed_query, start_index, count, include_members=False)
         )
 
 
