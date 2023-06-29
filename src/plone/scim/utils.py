@@ -65,15 +65,14 @@ def validate_scim_request(request, resource_type=None):
     except AssertionError as e:
         logger.warning("Content-Type is not application/scim+json")
 
-
     try:
         data = json.loads(request.BODY)
 
-        if resource_type and 'schemas' not in data:
+        if resource_type and "schemas" not in data:
             if resource_type == "Users":
-                data['schemas'] = ['urn:ietf:params:scim:schemas:core:2.0:User']
-            elif resource_type == 'Groups':
-                data['schemas'] = ['urn:ietf:params:scim:schemas:core:2.0:Group']
+                data["schemas"] = ["urn:ietf:params:scim:schemas:core:2.0:User"]
+            elif resource_type == "Groups":
+                data["schemas"] = ["urn:ietf:params:scim:schemas:core:2.0:Group"]
 
         validate_scim_data(data)
         return data
@@ -82,6 +81,7 @@ def validate_scim_request(request, resource_type=None):
         if detail.startswith("Response"):
             offset = len("Request")
             detail = "Request" + detail[offset:]
+        logger.exception(detail)
         raise BadRequest(detail)
     except TypeError as e:
         logger.exception(

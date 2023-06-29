@@ -296,13 +296,7 @@ class CreateUser(ScimView):
     # noinspection PyProtectedMember,PyArgumentList
     def render(self):
         headers = self.request.environ
-        body = json.loads(self.request['BODY'])
-        logger.info("###")
-        logger.info("Headers")
-        logger.info(headers)
-        logger.info("###")
-        logger.info("Body")
-        logger.info(body)
+        body = json.loads(self.request["BODY"])
 
         data = validate_scim_request(self.request, resource_type="Users")
         if HAS_CSRF_PROTECTION:
