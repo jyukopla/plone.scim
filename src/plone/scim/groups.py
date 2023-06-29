@@ -43,7 +43,7 @@ def groups_get_not_found(name):
     }
 
 
-def groups_get_bad_request_no_filter():
+def groups_get_bad_request():
     """Return response 400 for GET /Groups."""
     return {
         "schemas": ["urn:ietf:params:scim:api:messages:2.0:Error"],
@@ -146,11 +146,26 @@ def get_group_tuples(source_groups, group_id=None, external_id=None):
             yield source_groups._groups[group_id], external_id
 
 
-def filter_groups(context, query, include_members=True):
+def filter_groups(context, query, startIndex, count, include_members=True):
     """Return list of member objects from source_groups matching query."""
+
     groups = get_source_groups(context)
-    query = {"group_id": query.get("group_id"), "external_id": query.get("external_id")}
-    results = get_group_tuples(groups, **query)
+
+    # get groups by filter
+    if query:
+        query = {"group_id": query.get("group_id"), "external_id": query.get("external_id")}
+        results = get_group_tuples(groups, **query)
+    else:
+        results = []
+        for group_id, group in groups._groups.items():
+            external_id = groups._groupid_to_externalid.get(group_id)
+            results.append((group, external_id))
+
+    # paginate!
+    if count:
+        results = results[startIndex:startIndex+count]
+
+    portal_membership = getToolByName(context, "portal_membership")
     for group, external_id in results:
         if include_members:
             members = get_members(context, group["id"])
@@ -231,27 +246,44 @@ class GroupsGet(ScimView):
                 self.context, self.request, group, members, external_id
             )
 
-        # Filtered list of groups
+        # Possibly parse the filter query string
         query = self.request.form.get("filter") or ""
+        if query:
+            try:
+                parsed_query = from_filter(query)
+            except FilterParserException:
+                self.status_code = 400
+                return groups_get_bad_request()
+        else:
+            parsed_query = {}
+
+        # Possibly parse startIndex (1-based)
         try:
-            parsed_query = from_filter(query)
-        except FilterParserException:
-            self.status_code = 400
-            return groups_get_bad_request_no_filter()
+            startIndex = int(self.request.form.get("startIndex"))
+            if startIndex > 0:
+                startIndex = startIndex - 1
+        except ValueError:
+            startIndex = 0
+
+        # Possibly parse count
+        try:
+            count = int(self.request.form.get("count")) or None
+        except ValueError:
+            count = None
 
         return groups_get_multiple_ok(
-            filter_groups(self.context, parsed_query, include_members=False)
+            filter_groups(self.context, parsed_query, startIndex, count, include_members=False)
         )
 
 
 def get_group_id(data):
     """Return group_id name from SCIM Group."""
-    return data.get("id") or data.get("externalId")
+    return data.get("id") or data.get("externalId") or data.get("displayName")
 
 
 def get_external_id(data):
     """Return external_id name from SCIM Group."""
-    return data.get("externalId")
+    return data.get("externalId") or data.get("displayName")
 
 
 def get_display_name(data):
@@ -261,7 +293,7 @@ def get_display_name(data):
 
 def get_added_members(data):
     """Return members for SCIM Group."""
-    return data.get("members")
+    return data.get("members") or []
 
 
 class CreateGroup(ScimView):
