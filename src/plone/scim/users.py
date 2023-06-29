@@ -295,9 +295,6 @@ class CreateUser(ScimView):
 
     # noinspection PyProtectedMember,PyArgumentList
     def render(self):
-
-        logger.info("Here 0")
-
         headers = self.request.environ
         body = json.loads(self.request['BODY'])
         logger.info("###")
@@ -307,12 +304,9 @@ class CreateUser(ScimView):
         logger.info("Body")
         logger.info(body)
 
-        data = validate_scim_request(self.request)
-        logger.info("Here 01")
+        data = validate_scim_request(self.request, resource_type="Users")
         if HAS_CSRF_PROTECTION:
             alsoProvides(self.request, IDisableCSRFProtection)
-
-        logger.info("Here 1")
 
         # Extract supported data
         login = get_login(data)
@@ -320,20 +314,12 @@ class CreateUser(ScimView):
         fullname = get_fullname(data)
         email = get_email(data)
 
-        logger.info("Here 2")
-
         # Create user
         portal_membership = getToolByName(self.context, "portal_membership")
         users = get_source_users(self.context)
         if login in users._login_to_userid:
-            logger.info("# Login:")
-            logger.info(login)
-            logger.info("# _login_to_userid:")
-            logger.info(user._login_to_userid)
             self.status_code = 400
             return users_post_user_name_not_unique(login)
-
-        logger.info("Here 3")
 
         # TODO: We may want to support global uniqueness checking later,
         # but now we want to allow overlapping accounts with LDAP
@@ -348,13 +334,9 @@ class CreateUser(ScimView):
             users._externalid_to_login[str(external_id)] = str(login)
             users._login_to_externalid[str(login)] = str(external_id)
 
-        logger.info("Here 4")
-
         # Update user
         user = portal_membership.getMemberById(login)
         user.setMemberProperties({"fullname": fullname, "email": email})
-
-        logger.info("Here 5")
 
         self.status_code = 201
         return users_get_ok(self.context, self.request, user, external_id)
@@ -390,7 +372,7 @@ class UsersPut(ScimView):
         return self
 
     def render(self):
-        data = validate_scim_request(self.request)
+        data = validate_scim_request(self.request, resource_type="Users")
         if HAS_CSRF_PROTECTION:
             alsoProvides(self.request, IDisableCSRFProtection)
 

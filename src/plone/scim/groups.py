@@ -307,7 +307,7 @@ class CreateGroup(ScimView):
     # noinspection PyProtectedMember,PyArgumentList
     def render(self):
         """Implement SCIM endpoint POST /Groups."""
-        data = validate_scim_request(self.request)
+        data = validate_scim_request(self.request, resource_type="Groups")
         if HAS_CSRF_PROTECTION:
             alsoProvides(self.request, IDisableCSRFProtection)
 
@@ -376,7 +376,7 @@ class GroupsPut(ScimView):
         return self
 
     def render(self):
-        data = validate_scim_request(self.request)
+        data = validate_scim_request(self.request, resource_type="Groups")
         if HAS_CSRF_PROTECTION:
             alsoProvides(self.request, IDisableCSRFProtection)
 
