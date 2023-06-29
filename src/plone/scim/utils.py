@@ -63,7 +63,7 @@ def validate_scim_request(request):
             request.getHeader("content-type") == "application/scim+json"
         ), "Invalid Content-Type. Expecting 'application/scim+json'."
     except AssertionError as e:
-        raise BadRequest(str(e))
+        logger.warning("Content-Type is not application/scim+json")
 
     try:
         data = json.loads(request.BODY)
