@@ -65,8 +65,12 @@ def validate_scim_request(request):
     except AssertionError as e:
         logger.warning("Content-Type is not application/scim+json")
 
+    logger.info("Here 011")
+
     try:
+        logger.info("Here XX")
         data = json.loads(request.BODY)
+        logger.info("Here YY")
         validate_scim_data(data)
         return data
     except (AssertionError, JSONDecodeError) as e:
@@ -74,6 +78,8 @@ def validate_scim_request(request):
         if detail.startswith("Response"):
             offset = len("Request")
             detail = "Request" + detail[offset:]
+
+        logger.info("Here 012")
         raise BadRequest(detail)
     except TypeError as e:
         logger.exception(
@@ -81,6 +87,7 @@ def validate_scim_request(request):
                 json=json.dumps(data, indent=2)
             )
         )
+        logger.info("Here 013")
         raise BadRequest(str(e))
 
 

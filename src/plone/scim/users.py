@@ -308,6 +308,7 @@ class CreateUser(ScimView):
         logger.info(body)
 
         data = validate_scim_request(self.request)
+        logger.info("Here 01")
         if HAS_CSRF_PROTECTION:
             alsoProvides(self.request, IDisableCSRFProtection)
 
@@ -325,6 +326,10 @@ class CreateUser(ScimView):
         portal_membership = getToolByName(self.context, "portal_membership")
         users = get_source_users(self.context)
         if login in users._login_to_userid:
+            logger.info("# Login:")
+            logger.info(login)
+            logger.info("# _login_to_userid:")
+            logger.info(user._login_to_userid)
             self.status_code = 400
             return users_post_user_name_not_unique(login)
 
