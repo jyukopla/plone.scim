@@ -59,7 +59,6 @@ def check_permission(permission, obj):
 def validate_scim_request(request, resource_type=None):
     """Validate given request against known SCIM schemas."""
 
-    print("XX 1")
     try:
         assert (
             request.getHeader("content-type") == "application/scim+json"
@@ -67,12 +66,8 @@ def validate_scim_request(request, resource_type=None):
     except AssertionError as e:
         logger.warning("Content-Type is not application/scim+json")
 
-    print("XX 2")
-
     try:
         data = json.loads(request.BODY)
-
-        print("XX 3")
 
         if resource_type and "schemas" not in data:
             if resource_type == "Users":
@@ -83,7 +78,6 @@ def validate_scim_request(request, resource_type=None):
         validate_scim_data(data)
         return data
     except (AssertionError, JSONDecodeError) as e:
-        print("XX 4")
         detail = str(e)
         if detail.startswith("Response"):
             offset = len("Request")
@@ -91,7 +85,6 @@ def validate_scim_request(request, resource_type=None):
         logger.exception(detail)
         raise BadRequest(detail)
     except TypeError as e:
-        print("XX 5")
         logger.exception(
             "Unexpected exception for:\n{json:s}".format(
                 json=json.dumps(data, indent=2)
