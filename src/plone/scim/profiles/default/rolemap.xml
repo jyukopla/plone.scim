@@ -1,7 +1,11 @@
 <?xml version="1.0"?>
 <rolemap>
-  <permissions>
-  <!-- -*- extra stuff goes here -*- -->
-
-  </permissions>
+    <roles>
+        <role name="SCIM"/>
+    </roles>
+    <permissions>
+        <permission name="View" acquire="True">
+            <role name="SCIM"/>
+        </permission>
+    </permissions>
 </rolemap>
