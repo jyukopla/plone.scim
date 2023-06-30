@@ -4,6 +4,9 @@
         <role name="SCIM"/>
     </roles>
     <permissions>
+        <permission name="plone.scim: Manage Users and Groups" acquire="True">
+            <role name="SCIM"/>
+        </permission>
         <permission name="View" acquire="True">
             <role name="SCIM"/>
         </permission>

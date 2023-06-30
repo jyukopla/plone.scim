@@ -69,7 +69,7 @@ def scim_response(request, response, status_code=200):
 class ScimView(BrowserView):
     """SCIM endpoint base view."""
 
-    permission = "zope2.ManageUsers"
+    permission = "plone.scim:ManageUsersAndGroups"
 
     def __init__(self, context, request, response=None, status_code=200):
         super(ScimView, self).__init__(context, request)
