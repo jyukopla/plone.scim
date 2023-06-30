@@ -10,6 +10,9 @@ from zExceptions import NotFound
 from zope.interface import alsoProvides
 from zope.interface import implementer
 from zope.publisher.interfaces import IPublishTraverse
+import logging
+
+logger = logging.getLogger("plone.scim")
 
 
 # pylama:ignore=W0212,R1704
@@ -307,9 +310,12 @@ class CreateGroup(ScimView):
     # noinspection PyProtectedMember,PyArgumentList
     def render(self):
         """Implement SCIM endpoint POST /Groups."""
+        print("POST 1")
         data = validate_scim_request(self.request, resource_type="Groups")
         if HAS_CSRF_PROTECTION:
             alsoProvides(self.request, IDisableCSRFProtection)
+
+        print("POST 2")
 
         # Extract supported data
         group_id = get_group_id(data)
@@ -317,21 +323,35 @@ class CreateGroup(ScimView):
         display_name = get_display_name(data)
         members = get_added_members(data)
 
+        print("POST 3")
+
         assert group_id, "'id' or 'externalId' is required"
+
+        print("POST 4")
+
+        print("Request:")
+        logger.info(self.request['BODY'])
 
         # Create group
         groups = get_source_groups(self.context)
         try:
             group = groups.getGroupInfo(group_id)
             if group is not None:
+                print("POST 5")
+                logger.info(group)
                 self.status_code = 400
                 return groups_post_group_id_not_unique(group_id)
         except KeyError:
             pass
+
+        print("POST 5")
+
         groups.addGroup(str(group_id), title=display_name)
         portal_groups = getToolByName(self.context, "portal_groups")
         group = portal_groups.getGroupById(group_id)
         portal_groups.editGroup(group_id, title=display_name)
+
+        print("POST 6")
 
         for member in members:
             groups.addPrincipalToGroup(str(member["value"]), group_id)
