@@ -1,5 +1,6 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     xmlns:i18n="http://namespaces.zope.org/i18n"
     xmlns:plone="http://namespaces.plone.org/plone"
@@ -34,6 +35,13 @@
   <utility
       factory=".setuphandlers.HiddenProfiles"
       name="plone.scim-hiddenprofiles"
+      />
+
+  <browser:page
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      name="token-form"
+      class=".controlpanel.TokenForm"
+      permission="cmf.ManagePortal"
       />
 
   <!-- -*- extra stuff goes here -*- -->
