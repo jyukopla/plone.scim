@@ -12,6 +12,7 @@ from zope.interface import implementer
 from zope.publisher.interfaces import IPublishTraverse
 import logging
 
+
 # pylama:ignore=W0212,R1704
 # W0212 Access to a protected member
 # R1704 Redefining argument with the local name
