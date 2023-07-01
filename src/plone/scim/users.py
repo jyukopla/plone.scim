@@ -12,7 +12,6 @@ from zExceptions import NotFound
 from zope.interface import alsoProvides
 from zope.interface import implementer
 from zope.publisher.interfaces import IPublishTraverse
-import json
 
 
 # pylama:ignore=W0212,R1704
@@ -291,9 +290,6 @@ class CreateUser(ScimView):
 
     # noinspection PyProtectedMember,PyArgumentList
     def render(self):
-        headers = self.request.environ
-        body = json.loads(self.request["BODY"])
-
         data = validate_scim_request(self.request, resource_type="Users")
         if HAS_CSRF_PROTECTION:
             alsoProvides(self.request, IDisableCSRFProtection)
