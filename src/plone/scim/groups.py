@@ -10,7 +10,6 @@ from zExceptions import NotFound
 from zope.interface import alsoProvides
 from zope.interface import implementer
 from zope.publisher.interfaces import IPublishTraverse
-import logging
 
 
 # pylama:ignore=W0212,R1704
