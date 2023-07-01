@@ -180,7 +180,7 @@ class Schemas(ScimView):
         ]
 
         return {
-            "totalResults": 5,
+            "totalResults": 2,
             "schemas": ["urn:ietf:params:scim:api:messages:2.0:ListResponse"],
             "Resources": [
                 klass(self.context, self.request).render()
