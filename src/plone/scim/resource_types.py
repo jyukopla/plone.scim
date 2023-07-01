@@ -22,10 +22,9 @@ class UserResourceType(ScimView):
             "schemas": ["urn:ietf:params:scim:schemas:core:2.0:ResourceType"],
             "id": "User",
             "name": "User",
-            "endpoint": "{BASE_PATH:s}/Users".format(BASE_PATH=BASE_PATH),
+            "endpoint": "/Users",
             "description": "User Account",
             "schema": "urn:ietf:params:scim:schemas:core:2.0:User",
-            "schemaExtensions": [{}],
             "meta": {
                 "location": "{base_url:s}/v2/ResourceTypes/User".format(
                     base_url=base_url
@@ -50,7 +49,7 @@ class GroupResourceType(ScimView):
             "schemas": ["urn:ietf:params:scim:schemas:core:2.0:ResourceType"],
             "id": "Group",
             "name": "Group",
-            "endpoint": "{BASE_PATH:s}/Groups".format(BASE_PATH=BASE_PATH),
+            "endpoint": "/Groups",
             "description": "Group",
             "schema": "urn:ietf:params:scim:schemas:core:2.0:Group",
             "meta": {

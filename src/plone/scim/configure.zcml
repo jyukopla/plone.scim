@@ -1,5 +1,6 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     xmlns:i18n="http://namespaces.zope.org/i18n"
     xmlns:plone="http://namespaces.plone.org/plone"
@@ -7,10 +8,10 @@
 
   <i18n:registerTranslations directory="locales" />
 
+  <include package="Products.CMFCore" />
   <include package="plone.rest" />
 
   <include file="protocol.zcml" />
-
   <include file="upgrades.zcml" />
 
   <genericsetup:registerProfile
@@ -35,6 +36,17 @@
       factory=".setuphandlers.HiddenProfiles"
       name="plone.scim-hiddenprofiles"
       />
+
+  <browser:page
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      name="token-form"
+      class=".controlpanel.TokenForm"
+      permission="cmf.ManagePortal"
+      />
+
+  <permission
+      id="plone.scim:ManageUsersAndGroups"
+      title="plone.scim: Manage Users and Groups" />
 
   <!-- -*- extra stuff goes here -*- -->
 

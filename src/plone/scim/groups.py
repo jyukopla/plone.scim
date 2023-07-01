@@ -43,7 +43,7 @@ def groups_get_not_found(name):
     }
 
 
-def groups_get_bad_request_no_filter():
+def groups_get_bad_request():
     """Return response 400 for GET /Groups."""
     return {
         "schemas": ["urn:ietf:params:scim:api:messages:2.0:Error"],
@@ -146,11 +146,29 @@ def get_group_tuples(source_groups, group_id=None, external_id=None):
             yield source_groups._groups[group_id], external_id
 
 
-def filter_groups(context, query, include_members=True):
+def filter_groups(context, query, start_index, count, include_members=True):
     """Return list of member objects from source_groups matching query."""
+
     groups = get_source_groups(context)
-    query = {"group_id": query.get("group_id"), "external_id": query.get("external_id")}
-    results = get_group_tuples(groups, **query)
+
+    # get groups by filter
+    if query:
+        query = {
+            "group_id": query.get("group_id"),
+            "external_id": query.get("external_id"),
+        }
+        results = list(get_group_tuples(groups, **query))
+    else:
+        results = []
+        for group_id, group in groups._groups.items():
+            external_id = groups._groupid_to_externalid.get(group_id)
+            results.append((group, external_id))
+
+    # paginate!
+    if count:
+        results = results[start_index : start_index + count]
+
+    portal_membership = getToolByName(context, "portal_membership")
     for group, external_id in results:
         if include_members:
             members = get_members(context, group["id"])
@@ -231,27 +249,46 @@ class GroupsGet(ScimView):
                 self.context, self.request, group, members, external_id
             )
 
-        # Filtered list of groups
+        # Possibly parse the filter query string
         query = self.request.form.get("filter") or ""
+        if query:
+            try:
+                parsed_query = from_filter(query)
+            except FilterParserException:
+                self.status_code = 400
+                return groups_get_bad_request()
+        else:
+            parsed_query = {}
+
+        # Possibly parse start_index (1-based)
         try:
-            parsed_query = from_filter(query)
-        except FilterParserException:
-            self.status_code = 400
-            return groups_get_bad_request_no_filter()
+            start_index = int(self.request.form.get("startIndex"))
+            if start_index > 0:
+                start_index = start_index - 1
+        except (ValueError, TypeError):
+            start_index = 0
+
+        # Possibly parse count
+        try:
+            count = int(self.request.form.get("count")) or None
+        except (ValueError, TypeError):
+            count = None
 
         return groups_get_multiple_ok(
-            filter_groups(self.context, parsed_query, include_members=False)
+            filter_groups(
+                self.context, parsed_query, start_index, count, include_members=False
+            )
         )
 
 
 def get_group_id(data):
     """Return group_id name from SCIM Group."""
-    return data.get("id") or data.get("externalId")
+    return data.get("id") or data.get("externalId") or data.get("displayName")
 
 
 def get_external_id(data):
     """Return external_id name from SCIM Group."""
-    return data.get("externalId")
+    return data.get("externalId") or data.get("displayName")
 
 
 def get_display_name(data):
@@ -261,7 +298,7 @@ def get_display_name(data):
 
 def get_added_members(data):
     """Return members for SCIM Group."""
-    return data.get("members")
+    return data.get("members") or []
 
 
 class CreateGroup(ScimView):
@@ -270,7 +307,7 @@ class CreateGroup(ScimView):
     # noinspection PyProtectedMember,PyArgumentList
     def render(self):
         """Implement SCIM endpoint POST /Groups."""
-        data = validate_scim_request(self.request)
+        data = validate_scim_request(self.request, resource_type="Groups")
         if HAS_CSRF_PROTECTION:
             alsoProvides(self.request, IDisableCSRFProtection)
 
@@ -291,6 +328,7 @@ class CreateGroup(ScimView):
                 return groups_post_group_id_not_unique(group_id)
         except KeyError:
             pass
+
         groups.addGroup(str(group_id), title=display_name)
         portal_groups = getToolByName(self.context, "portal_groups")
         group = portal_groups.getGroupById(group_id)
@@ -339,7 +377,8 @@ class GroupsPut(ScimView):
         return self
 
     def render(self):
-        data = validate_scim_request(self.request)
+
+        data = validate_scim_request(self.request, resource_type="Groups")
         if HAS_CSRF_PROTECTION:
             alsoProvides(self.request, IDisableCSRFProtection)
 
@@ -350,6 +389,7 @@ class GroupsPut(ScimView):
             )
         else:
             group, members, external_id = (None, (), None)
+
         if group is None:
             self.status_code = 404
             return groups_get_not_found(self.group_id or "")

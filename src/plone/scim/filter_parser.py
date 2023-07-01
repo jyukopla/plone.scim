@@ -4,11 +4,11 @@ import re
 
 
 try:
-    from urllib.parse import urlparse
     from urllib.parse import parse_qs
+    from urllib.parse import urlparse
 except ImportError:  # python2
-    from urlparse import urlparse
     from urlparse import parse_qs
+    from urlparse import urlparse
 
 
 EQ = re.compile(r'([a-z]+)\sEq\s"([^"]+)"|([a-z]+)\sEq\s([^\s]+)', re.I)

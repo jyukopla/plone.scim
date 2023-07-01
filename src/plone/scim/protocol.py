@@ -102,8 +102,8 @@ GET_ENDPOINTS = {
             },
         },
     },
-    "Users": {"permission": "zope2.ManageUsers", "view": UsersGet},
-    "Groups": {"permission": "zope2.ManageUsers", "view": GroupsGet},
+    "Users": {"permission": "plone.scim:ManageUsersAndGroups", "view": UsersGet},
+    "Groups": {"permission": "plone.scim:ManageUsersAndGroups", "view": GroupsGet},
 }
 
 GET_ENDPOINTS["v2"] = {"permission": "zope2.View", "mapping": GET_ENDPOINTS.copy()}
@@ -140,6 +140,7 @@ class Get(Service):
         )
 
     def render(self):
+
         if self.permission and not check_permission(self.permission, self.context):
             portal_membership = getToolByName(self.context, "portal_membership")
             if portal_membership.isAnonymousUser():
@@ -160,11 +161,11 @@ class Get(Service):
 
 
 POST_ENDPOINTS = {
-    "Users": {"permission": "zope2.ManageUsers", "view": CreateUser},
-    "Groups": {"permission": "zope2.ManageUsers", "view": CreateGroup},
+    "Users": {"permission": "plone.scim:ManageUsersAndGroups", "view": CreateUser},
+    "Groups": {"permission": "plone.scim:ManageUsersAndGroups", "view": CreateGroup},
 }
 POST_ENDPOINTS["v2"] = {
-    "permission": "zope2.ManageUsers",
+    "permission": "plone.scim:ManageUsersAndGroups",
     "mapping": POST_ENDPOINTS.copy(),
 }
 
@@ -179,11 +180,11 @@ class Post(Get):
 
 
 PUT_ENDPOINTS = {
-    "Users": {"permission": "zope2.ManageUsers", "view": UsersPut},
-    "Groups": {"permission": "zope2.ManageUsers", "view": GroupsPut},
+    "Users": {"permission": "plone.scim:ManageUsersAndGroups", "view": UsersPut},
+    "Groups": {"permission": "plone.scim:ManageUsersAndGroups", "view": GroupsPut},
 }
 PUT_ENDPOINTS["v2"] = {
-    "permission": "zope2.ManageUsers",
+    "permission": "plone.scim:ManageUsersAndGroups",
     "mapping": PUT_ENDPOINTS.copy(),
 }
 
@@ -198,11 +199,11 @@ class Put(Get):
 
 
 DELETE_ENDPOINTS = {
-    "Users": {"permission": "zope2.ManageUsers", "view": UsersDelete},
-    "Groups": {"permission": "zope2.ManageUsers", "view": GroupsDelete},
+    "Users": {"permission": "plone.scim:ManageUsersAndGroups", "view": UsersDelete},
+    "Groups": {"permission": "plone.scim:ManageUsersAndGroups", "view": GroupsDelete},
 }
 DELETE_ENDPOINTS["v2"] = {
-    "permission": "zope2.ManageUsers",
+    "permission": "plone.scim:ManageUsersAndGroups",
     "mapping": DELETE_ENDPOINTS.copy(),
 }
 

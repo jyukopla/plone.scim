@@ -48,7 +48,7 @@ class TestUsers(unittest.TestCase):
     def test_get_users_without_filter(self):
         url = "/".join([self.portal.absolute_url(), BASE_PATH, "Users"])
         response = requests.get(url, headers=HEADERS)
-        self.assertEqual(response.status_code, 400, response.json())
+        self.assertEqual(response.status_code, 200, response.json())
 
     def test_get_users_with_filter(self):
         url = (
